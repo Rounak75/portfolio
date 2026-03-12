@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<!--
+  index.html — HTML shell + SEO + PWA setup
+  
+  ✏️ THINGS TO CHANGE HERE:
+    - <title>              → your name
+    - meta description     → your tagline / pitch
+    - og:url               → your live site URL (after deploying)
+    - og:image             → full URL to a preview image (1200x630px)
+                             Place the image in /public/og-preview.png
+    - twitter:site         → your Twitter/X handle
+    - theme-color          → matches your brand color
+-->
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ═══════════════════════════════════════════
+       PRIMARY SEO
+       These are the most important meta tags.
+       Search engines read these to understand
+       and rank your page.
+  ════════════════════════════════════════════ -->
+
+  <!-- ✏️ This appears in browser tab + Google results title -->
+  <title>Rounak Kumar Mahato — AI Developer & Full Stack Engineer</title>
+
+  <!-- ✏️ 150-160 chars. Shown in Google search results. -->
+  <meta name="description"
+    content="Rounak Kumar Mahato — AI Developer, Python Engineer, and Full Stack Developer. CSE undergrad at SOA ITER. Building intelligent systems and modern web apps." />
+
+  <!-- Comma-separated keywords (less important now but still good) -->
+  <meta name="keywords"
+    content="Rounak Kumar Mahato, AI Developer, Python, Machine Learning, React, Django, Full Stack, Portfolio, SOA ITER" />
+
+  <!-- Your name as the author -->
+  <meta name="author" content="Rounak Kumar Mahato" />
+
+  <!-- Tells search engines to index the page and follow links -->
+  <meta name="robots" content="index, follow" />
+
+  <!-- Canonical URL — prevents duplicate content issues -->
+  <!-- ✏️ Replace with your actual deployed URL -->
+  <link rel="canonical" href="https://rounakmahato.dev/" />
+
+
+  <!-- ═══════════════════════════════════════════
+       OPEN GRAPH (Facebook, LinkedIn, WhatsApp)
+       Controls how your site looks when shared
+       on social media as a link preview card.
+  ════════════════════════════════════════════ -->
+  <meta property="og:type"        content="website" />
+  <!-- ✏️ Your deployed URL -->
+  <meta property="og:url"         content="https://rounakmahato.dev/" />
+  <meta property="og:title"       content="Rounak Kumar Mahato — AI Developer" />
+  <meta property="og:description" content="AI Developer, Python Engineer & Full Stack Developer. Building intelligent systems and modern web apps." />
+  <!-- ✏️ Place a 1200×630px image at /public/og-preview.png
+       This is the big image shown in link previews on LinkedIn etc. -->
+  <meta property="og:image"       content="https://rounakmahato.dev/og-preview.png" />
+  <meta property="og:image:width"  content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale"      content="en_IN" />
+  <meta property="og:site_name"   content="Rounak Kumar Mahato Portfolio" />
+
+
+  <!-- ═══════════════════════════════════════════
+       TWITTER / X CARD
+       Controls how your link looks when shared
+       on Twitter/X.
+  ════════════════════════════════════════════ -->
+  <!-- summary_large_image = big image card style -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <!-- ✏️ Your Twitter/X handle (with @) -->
+  <meta name="twitter:site"        content="@YourTwitterHandle" />
+  <meta name="twitter:creator"     content="@YourTwitterHandle" />
+  <meta name="twitter:title"       content="Rounak Kumar Mahato — AI Developer" />
+  <meta name="twitter:description" content="AI Developer, Python Engineer & Full Stack Developer building intelligent systems." />
+  <!-- ✏️ Same og-preview image works here -->
+  <meta name="twitter:image"       content="https://rounakmahato.dev/og-preview.png" />
+
+
+  <!-- ═══════════════════════════════════════════
+       PWA — PROGRESSIVE WEB APP
+       Makes your portfolio installable on phones
+       and desktops like a native app.
+       
+       The manifest.json file is in /public/
+  ════════════════════════════════════════════ -->
+
+  <!-- Links the PWA manifest file -->
+  <link rel="manifest" href="/manifest.json" />
+
+  <!-- Theme color: browser UI (address bar) matches your brand -->
+  <!-- On Android Chrome, this tints the status bar -->
+  <meta name="theme-color" content="#63b3ed" />
+
+  <!-- Apple-specific PWA tags (for iPhone "Add to Home Screen") -->
+  <meta name="apple-mobile-web-app-capable"        content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title"          content="Rounak · Portfolio" />
+  <!-- ✏️ Place a 180×180 icon at /public/apple-touch-icon.png -->
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <!-- Standard favicon -->
+  <!-- ✏️ Place a 32×32 icon at /public/favicon.ico -->
+  <!-- For now using an emoji favicon as fallback -->
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+
+
+  <!-- ═══════════════════════════════════════════
+       STRUCTURED DATA (JSON-LD)
+       Helps Google show rich results — like your
+       name, job title and social links in search.
+  ════════════════════════════════════════════ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Rounak Kumar Mahato",
+    "url": "https://rounakmahato.dev/",
+    "image": "https://rounakmahato.dev/og-preview.png",
+    "jobTitle": "AI Developer & Full Stack Engineer",
+    "description": "CSE undergrad at SOA ITER building AI systems and modern web apps.",
+    "email": "rounakmahato039@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Bhubaneswar",
+      "addressRegion": "Odisha",
+      "addressCountry": "IN"
+    },
+    "alumniOf": {
+      "@type": "CollegeOrUniversity",
+      "name": "Siksha 'O' Anusandhan University, ITER"
+    },
+    "sameAs": [
+      "https://github.com/Rounak75",
+      "https://linkedin.com/in/rounakmahato"
+    ],
+    "knowsAbout": [
+      "Artificial Intelligence",
+      "Machine Learning",
+      "Python",
+      "React",
+      "Django",
+      "Full Stack Development"
+    ]
+  }
+  </script>
+
+
+  <!-- ═══════════════════════════════════════════
+       FONTS
+       Preconnect speeds up Google Fonts loading.
+  ════════════════════════════════════════════ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+
+</head>
+<body>
+  <!-- React mounts here — don't add content inside this div -->
+  <div id="root"></div>
+
+  <!-- Vite entry point -->
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>
