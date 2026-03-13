@@ -75,8 +75,9 @@ export default function App() {
 
   return (
     <div className={`min-h-screen transition-colors duration-500
-      ${isDark ? 'bg-navy-900 text-slate-100' : 'bg-slate-50 text-slate-900'}`}
+        ${isDark ? 'bg-black text-slate-100' : 'bg-slate-50 text-slate-900'}`}
     >
+
       {/* Loading screen — AnimatePresence here triggers exit anim */}
       <AnimatePresence mode="wait">
         {loading && (
