@@ -71,12 +71,12 @@ export default function Hero({ isDark }) {
   return (
     <section
       id="hero"
-      className="min-h-screen flex items-center pt-24 pb-20"
+      className="min-h-screen flex items-center pt-20 pb-16 md:pt-24 md:pb-20"
     >
-      <div className="max-w-6xl mx-auto px-6 w-full">
+  <div className="max-w-6xl mx-auto px-4 sm:px-6 w-full">
 
         {/* ── Two-column grid ─────────────────────────── */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8 md:gap-16 items-center">
 
           {/* ── LEFT: Text Content ──────────────────────── */}
           <motion.div
