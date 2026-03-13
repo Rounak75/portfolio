@@ -85,6 +85,13 @@ body {
   background-size: 200% auto;
   animation: gold-shimmer 4s linear infinite;
 }
+/* Light mode: darken the logo gradient so it reads on ivory/white */
+:root:not(.dark) .gradient-text {
+  background: linear-gradient(135deg, #c49a2a 0%, #e8b93f 45%, #c49a2a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
 /* ─────────────────────────────────────────────
    NOISE TEXTURE OVERLAY
@@ -247,12 +254,16 @@ body {
    Add .light to <html> or remove .dark to activate
    ───────────────────────────────────────────── */
 :root:not(.dark) {
-  /* All the dark backgrounds become light */
+  /* Warm ivory base — replaces cold white/grey */
+  background-color: #FDFAF5;
 }
 :root:not(.dark) .orb {
-  opacity: 0.07; /* dimmer orbs in light mode */
+  opacity: 0.08;
 }
-
+/* Warm parchment tint on the body itself */
+:root:not(.dark) body {
+  background-color: #FDFAF5;
+}
 /* ─────────────────────────────────────────────
    REDUCED MOTION SUPPORT
    Respects the OS "reduce motion" setting.

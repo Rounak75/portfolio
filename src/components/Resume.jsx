@@ -9,7 +9,7 @@ export default function Resume({ isDark }) {
   const [pdfOpen, setPdfOpen] = useState(false)
 
   return (
-    <section id="resume" className="py-28">
+    <section id="resume" className="py-16 md:py-28">
       <div className="max-w-6xl mx-auto px-6">
 
         <motion.div
@@ -31,7 +31,7 @@ export default function Resume({ isDark }) {
             'max-w-2xl mx-auto mt-14 rounded-3xl border overflow-hidden transition-all duration-300',
             isDark
               ? 'bg-white/[0.04] border-white/[0.08]'
-              : 'bg-white border-black/[0.07] shadow-md'
+              : 'bg-white/80 border-amber-200/70 shadow-md'
           )}
         >
           {/* Top info */}
@@ -117,38 +117,47 @@ export default function Resume({ isDark }) {
             )}
           </div>
 
-          {/* PDF viewer */}
+          {/* PDF viewer — fixed height animated container */}
           <AnimatePresence>
             {pdfOpen && (
               <motion.div
                 key="pdf"
                 initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
+                animate={{ height: 'min(720px, 62vh)', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                 className="overflow-hidden"
               >
                 <div className={clsx('h-px mx-8', isDark ? 'bg-white/[0.07]' : 'bg-black/[0.07]')} />
+                <iframe
+                  src={`${personal.resumeUrl}#toolbar=0&navpanes=0&scrollbar=1`}
+                  className="w-full"
+                  style={{ height: '100%', border: 'none', display: 'block' }}
+                  title="Resume Preview"
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-                <div className="p-3 md:p-4">
-                  <iframe
-                    src={`${personal.resumeUrl}#toolbar=0&navpanes=0&scrollbar=1`}
-                    className="w-full rounded-2xl"
-                    style={{ height: 'min(720px, 60vh', border: 'none' }}
-                    title="Resume Preview"
-                  />
-                </div>
-
-                <div className="px-6 md:px-10 pb-8 pt-2 text-center">
-                  <a
-                    href={personal.resumeUrl}
-                    download
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-yellow-600 to-yellow-400 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-yellow-500/25 transition-all duration-200"
-                  >
-                    <Download size={14} />
-                    Download a copy
-                  </a>
-                </div>
+          {/* Download button — outside the animated div so overflow-hidden never clips it */}
+          <AnimatePresence>
+            {pdfOpen && (
+              <motion.div
+                key="download-btn"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 8 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
+                className="px-6 py-6 text-center"
+              >
+                <a
+                  href={personal.resumeUrl}
+                  download
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-yellow-600 to-yellow-400 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-yellow-500/25 transition-all duration-200"
+                >
+                  <Download size={14} />
+                  Download a copy
+                </a>
               </motion.div>
             )}
           </AnimatePresence>

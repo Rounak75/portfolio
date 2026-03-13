@@ -11,6 +11,7 @@ import clsx from 'clsx'
 
 const MAX_TILT = 12
 const SPRING   = { stiffness: 300, damping: 28, mass: 0.5 }
+const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
 
 export default function ProjectCard({ project, isDark, onPreview }) {
   const cardRef  = useRef(null)
@@ -35,12 +36,12 @@ export default function ProjectCard({ project, isDark, onPreview }) {
   const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0) }
 
   return (
-    <div style={{ perspective: 900 }}>
+    <div style={{ perspective: isMobile ? 'none' : 900 }}>
       <motion.div
         ref={cardRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+        onMouseMove={isMobile ? undefined : handleMouseMove}
+        onMouseLeave={isMobile ? undefined : handleMouseLeave}
+        style={isMobile ? {} : { rotateX, rotateY, transformStyle: 'preserve-3d' }}
         whileHover={{ scale: 1.02, z: 20 }}
         transition={{ duration: 0.25 }}
         className={clsx(
@@ -48,18 +49,18 @@ export default function ProjectCard({ project, isDark, onPreview }) {
           'transition-colors duration-300',
           isDark
             ? 'bg-white/[0.04] border-white/[0.08] hover:border-yellow-500/30'
-            : 'bg-white border-black/[0.07] shadow-sm hover:border-cyan-300/60'
+            : 'bg-white/80 border-amber-200/60 shadow-sm hover:border-yellow-500/50 hover:shadow-lg hover:shadow-yellow-500/[0.08]'
         )}
       >
         {/* Shine overlay */}
         <motion.div
           className="absolute inset-0 pointer-events-none z-20 rounded-2xl"
           style={{
-            background: useTransform(
+            background: isMobile ? 'none' : useTransform(
               [shineX, shineY],
               ([x, y]) => `radial-gradient(circle at ${x} ${y}, rgba(255,255,255,0.09) 0%, transparent 65%)`
             ),
-            translateZ: 1,
+            translateZ: isMobile ? 0 : 1,
           }}
         />
 
@@ -69,7 +70,7 @@ export default function ProjectCard({ project, isDark, onPreview }) {
           isDark ? 'bg-black/60 border-white/[0.06]' : 'bg-slate-50 border-black/[0.05]'
         )}>
           <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/0 to-yellow-400/0 group-hover:from-yellow-500/[0.08] group-hover:to-yellow-400/[0.08] transition-all duration-300" />
-          <span className="relative z-10" style={{ display: 'block', transform: 'translateZ(30px)' }}>
+          <span className="relative z-10" style={{ display: 'block', transform: isMobile ? 'none' : 'translateZ(30px)' }}>
             {project.emoji}
           </span>
           {project.featured && (
@@ -97,7 +98,7 @@ export default function ProjectCard({ project, isDark, onPreview }) {
         {/* Body */}
         <div
           className="p-6 flex flex-col flex-1"
-          style={{ transform: 'translateZ(10px)' }}
+          style={{ transform: isMobile ? 'none' : 'translateZ(10px)' }}
           // On mobile, tap the card body to toggle expanded
           onClick={() => {
             if (window.innerWidth < 768) setExpanded(o => !o)

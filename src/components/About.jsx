@@ -63,7 +63,7 @@ function TimelineCard({ item, index, isDark, isLast }) {
           'w-full rounded-2xl border p-5 transition-colors duration-300 group',
           isDark
             ? 'bg-white/[0.04] border-white/[0.08] hover:border-yellow-500/30 hover:bg-white/[0.07] hover:shadow-xl hover:shadow-yellow-500/[0.06]'
-            : 'bg-white border-black/[0.07] shadow-sm hover:border-yellow-500/30 hover:shadow-md'
+            : 'bg-white/80 border-amber-200/60 shadow-sm hover:border-yellow-500/50 hover:shadow-md hover:shadow-yellow-500/[0.08]'
         )}
       >
         {/* Top row: icon badge + year */}
@@ -156,13 +156,13 @@ function TimelineCard({ item, index, isDark, isLast }) {
 
 // ═══════════════════════════════════════════════════════
 export default function About({ isDark }) {
-  const surface      = isDark ? 'bg-white/[0.04] border-white/[0.08]' : 'bg-white border-black/[0.08] shadow-sm'
+  const surface = isDark ? 'bg-white/[0.04] border-white/[0.08]' : 'bg-white/80 border-amber-200/70 shadow-sm'
   const surfaceHover = isDark
     ? 'hover:border-yellow-500/25 hover:shadow-lg hover:shadow-yellow-500/[0.07]'
     : 'hover:border-yellow-500/40 hover:shadow-md'
 
   return (
-    <section id="about" className={clsx('py-16 md:py-28', isDark ? 'bg-black/40' : 'bg-gray-50/60')}>
+    <section id="about" className={clsx('py-16 md:py-28', isDark ? 'bg-black/40' : 'bg-amber-50/40')}>
       <div className="max-w-6xl mx-auto px-6">
 
         <FadeUp>
@@ -175,10 +175,10 @@ export default function About({ isDark }) {
           {/* ── LEFT: Bio + achievement + cert cards ──── */}
           <div>
             <FadeUp delay={0.05}>
-              <p className={clsx('text-base leading-[1.9] mb-4', isDark ? 'text-slate-400' : 'text-slate-600')}>
+              <p className={clsx('text-base leading-[1.9] mb-4', isDark ? 'text-slate-400' : 'text-stone-600')}>
                 {personal.aboutLong}
               </p>
-              <p className={clsx('text-sm leading-[1.9] mb-8', isDark ? 'text-slate-500' : 'text-slate-500')}>
+              <p className={clsx('text-sm leading-[1.9] mb-8', isDark ? 'text-slate-500' : 'text-stone-500')}>
                 {personal.aboutExtra}
               </p>
             </FadeUp>

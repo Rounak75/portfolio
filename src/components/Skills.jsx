@@ -23,7 +23,7 @@ function SkillBar({ skill, isDark, inView }) {
       'rounded-2xl border p-5 transition-all duration-300',
       isDark
         ? 'bg-white/[0.04] border-white/[0.08] hover:border-yellow-500/25 hover:shadow-lg hover:shadow-cyan-400/[0.07]'
-        : 'bg-white border-black/[0.07] shadow-sm hover:border-yellow-500-300/50 hover:shadow-md'
+        : 'bg-white/80 border-amber-200/60 shadow-sm hover:border-yellow-500/50 hover:shadow-md hover:shadow-yellow-500/[0.08]'
     )}>
       {/* Top row: icon + name + percentage */}
       <div className="flex items-center justify-between mb-3">
@@ -31,7 +31,7 @@ function SkillBar({ skill, isDark, inView }) {
           {/* Emoji icon */}
           <span className={clsx(
             'w-8 h-8 rounded-lg flex items-center justify-center text-lg',
-            isDark ? 'bg-white/[0.06]' : 'bg-black/[0.04]'
+            isDark ? 'bg-white/[0.06]' : 'bg-amber-100/60'
           )}>
             {skill.emoji}
           </span>
@@ -46,7 +46,7 @@ function SkillBar({ skill, isDark, inView }) {
       {/* Bar track */}
       <div className={clsx(
         'h-1.5 rounded-full overflow-hidden',
-        isDark ? 'bg-white/[0.08]' : 'bg-black/[0.07]'
+        isDark ? 'bg-white/[0.08]' : 'bg-amber-100/80'
       )}>
         {/* Animated fill — width goes 0 → pct when inView */}
         <motion.div
@@ -118,7 +118,7 @@ export default function Skills({ isDark }) {
                 'border transition-all duration-200',
                 isDark
                   ? 'bg-white/[0.04] border-white/[0.08] text-slate-300 hover:border-yellow-500/30 hover:text-yellow-500 hover:shadow-md hover:shadow-cyan-400/10'
-                  : 'bg-white border-black/[0.08] text-slate-600 hover:border-yellow-500-300 hover:text-cyan-600 hover:shadow-sm'
+                  : 'bg-white/80 border-amber-200/60 text-stone-600 hover:border-yellow-500/50 hover:text-yellow-700 hover:bg-amber-50 hover:shadow-sm'
               )}
             >
               {chip}

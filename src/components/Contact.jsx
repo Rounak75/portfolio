@@ -216,11 +216,11 @@ export default function Contact({ isDark }) {
 
   const handleReset = () => { setStatus('idle'); setErrors({}) }
 
-  const surface  = isDark ? 'bg-white/[0.04] border-white/[0.08]' : 'bg-white border-black/[0.07] shadow-sm'
+  const surface  = isDark ? 'bg-white/[0.04] border-white/[0.08]' : 'bg-white/80 border-amber-200/70 shadow-sm'
   const inputCls = field => clsx(
     'w-full px-4 py-3 rounded-xl text-sm border transition-all duration-200 outline-none font-body',
     isDark ? 'bg-black/80 text-slate-100 border-white/[0.1] placeholder:text-slate-600 focus:bg-black'
-           : 'bg-slate-50 text-slate-900 border-black/[0.1] placeholder:text-slate-400 focus:bg-white',
+           : 'bg-amber-50/50 text-stone-900 border-amber-200/70 placeholder:text-stone-400 focus:bg-white',
     errors[field]
       ? 'border-red-400/70 focus:border-red-400 focus:shadow-[0_0_0_3px_rgba(248,113,113,0.12)]'
       : isDark ? 'focus:border-yellow-500/60 focus:shadow-[0_0_0_3px_rgba(99,179,237,0.1)]'
@@ -228,7 +228,7 @@ export default function Contact({ isDark }) {
   )
 
   return (
-    <section id="contact" className={clsx('py-16 md:py-28', isDark ? 'bg-neutral-900/40' : 'bg-gray-50/60')}>
+    <section id="contact" className={clsx('py-16 md:py-28', isDark ? 'bg-neutral-900/40' : 'bg-amber-50/40')}>
       <div className="max-w-6xl mx-auto px-6">
 
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}

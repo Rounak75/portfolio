@@ -235,12 +235,16 @@ export default function Hero({ isDark }) {
                 'border flex flex-col items-center justify-center',
                 'relative overflow-hidden',
                 isDark
-                  ? 'bg-neutral-900 border-yellow-500/20 shadow-[0_0_60px_rgba(212,168,67,0.12),0_0_100px_rgba(167,139,250,0.1)]'
-                  : 'bg-white border-cyan-300/40 shadow-[0_0_50px_rgba(212,168,67,0.1)]'
-              )}>
+                  ? 'bg-[#111111] border-yellow-500/20 shadow-[0_0_60px_rgba(212,168,67,0.12),0_0_100px_rgba(167,139,250,0.1)]'
+                  : 'bg-[#0a0a0a] border-yellow-500/25 shadow-[0_0_40px_rgba(212,168,67,0.15)]'
+                )}>
                 {/* Subtle gradient overlay inside card */}
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/[0.07] to-violet-400/[0.07]" />
-
+                <div className={clsx(
+                  'absolute inset-0',
+                  isDark
+                    ? 'bg-gradient-to-br from-cyan-400/[0.07] to-violet-400/[0.07]'
+                    : 'bg-gradient-to-br from-yellow-500/[0.08] to-yellow-600/[0.04]'
+                )} />
                 {/* Initials */}
                 <div className="relative z-10 text-center">
                   <div
@@ -251,7 +255,7 @@ export default function Hero({ isDark }) {
                   </div>
                   <div className={clsx(
                     'font-mono text-[0.7rem] tracking-[0.2em] uppercase mt-2',
-                    isDark ? 'text-slate-500' : 'text-slate-400'
+                    isDark ? 'text-slate-500' : 'text-slate-500'
                   )}>
                     AI Developer
                   </div>
@@ -273,11 +277,11 @@ export default function Hero({ isDark }) {
                           ? 'bg-neutral-900/90 border-violet-400/30 text-violet-400'
                           : 'bg-neutral-900/90 border-emerald-400/30 text-emerald-400'
                       : chip.accent === 'cyan'
-                        ? 'bg-white/90 border-cyan-300 text-cyan-600 shadow-md'
+                        ? 'bg-stone-800/70 border-yellow-500/35 text-yellow-400 shadow-md'
                         : chip.accent === 'violet'
-                          ? 'bg-white/90 border-violet-300 text-violet-600 shadow-md'
-                          : 'bg-white/90 border-emerald-300 text-emerald-600 shadow-md'
-                  )}
+                          ? 'bg-stone-800/70 border-yellow-500/25 text-yellow-300 shadow-md'
+                          : 'bg-stone-800/70 border-emerald-400/30 text-emerald-400 shadow-md'
+                      )}
                   // Each chip floats up/down with a different delay
                   animate={{ y: [0, -8, 0] }}
                   transition={{

@@ -32,7 +32,7 @@ export default function Projects({ isDark }) {
   return (
     <section
       id="projects"
-      className={clsx('py-16 md:py-28', isDark ? 'bg-black/40' : 'bg-gray-50/60')}
+      className={clsx('py-16 md:py-28', isDark ? 'bg-black/40' : 'bg-amber-50/40')}
     >
       <div className="max-w-6xl mx-auto px-6">
 
@@ -70,7 +70,7 @@ export default function Projects({ isDark }) {
                   // Inactive: ghost style
                   : isDark
                     ? 'bg-white/[0.04] border-white/[0.08] text-slate-400 hover:border-yellow-500/30 hover:text-slate-200'
-                    : 'bg-white border-black/[0.08] text-slate-500 hover:border-cyan-300 hover:text-slate-700'
+                    : 'bg-white/80 border-amber-200/60 text-stone-500 hover:border-yellow-500/50 hover:text-yellow-700 hover:bg-amber-50'
               )}
             >
               {cat}

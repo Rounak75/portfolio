@@ -65,14 +65,17 @@ export default function Navbar({ isDark, triggerRipple }) {
           scrolled
             ? isDark
               ? 'bg-black/80 backdrop-blur-xl border-b border-white/[0.06] py-3 shadow-xl'
-              : 'bg-white/80 backdrop-blur-xl border-b border-black/[0.06] py-3 shadow-md'
+              : 'bg-[#FDFAF5]/90 backdrop-blur-xl border-b border-amber-200/60 py-3 shadow-sm shadow-amber-100/50'
             : 'py-5'
         )}
       >
         <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
-          <a href="#hero" className="font-display font-extrabold text-lg tracking-tight gradient-text">
-            {personal.nameShort}.
-          </a>
+          <a href="#hero" className={clsx(
+            'font-display font-extrabold text-lg tracking-tight gradient-text px-2 py-0.5 rounded-lg transition-colors duration-300',
+            isDark ? 'bg-transparent' : 'bg-stone-900'
+        )}>
+  {personal.nameShort}.
+</a>
 
           {/* Desktop links */}
           <div className="hidden md:flex items-center gap-1">
@@ -173,7 +176,7 @@ export default function Navbar({ isDark, triggerRipple }) {
               'fixed top-0 right-0 bottom-0 z-50 w-72 md:hidden flex flex-col',
               isDark
                 ? 'bg-black border-l border-white/[0.08]'
-                : 'bg-white border-l border-black/[0.07] shadow-2xl'
+                : 'bg-[#FDFAF5] border-l border-amber-200/60 shadow-2xl shadow-amber-100/30'
             )}
           >
             {/* Drawer header */}
@@ -181,8 +184,11 @@ export default function Navbar({ isDark, triggerRipple }) {
               'flex items-center justify-between px-6 py-5 border-b',
               isDark ? 'border-white/[0.06]' : 'border-black/[0.06]'
             )}>
-              <span className="font-display font-extrabold text-lg gradient-text">
-                {personal.nameShort}.
+              <span className={clsx(
+                'font-display font-extrabold text-lg gradient-text px-2 py-0.5 rounded-lg transition-colors duration-300',
+                !isDark && 'bg-stone-900'
+              )}>
+              {personal.nameShort}.
               </span>
               <button
                 onClick={closeMenu}

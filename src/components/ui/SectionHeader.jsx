@@ -42,7 +42,7 @@ export function SectionDesc({ children, isDark, className = '' }) {
   return (
     <p className={clsx(
       'text-base mt-3 max-w-xl',
-      isDark ? 'text-slate-400' : 'text-slate-500',
+      isDark ? 'text-slate-400' : 'text-stone-500',
       className
     )}>
       {children}
