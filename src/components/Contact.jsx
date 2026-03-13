@@ -228,7 +228,7 @@ export default function Contact({ isDark }) {
   )
 
   return (
-    <section id="contact" className={clsx('py-28', isDark ? 'bg-neutral-900/40' : 'bg-gray-50/60')}>
+    <section id="contact" className={clsx('py-16 md:py-28', isDark ? 'bg-neutral-900/40' : 'bg-gray-50/60')}>
       <div className="max-w-6xl mx-auto px-6">
 
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}

@@ -162,7 +162,7 @@ export default function About({ isDark }) {
     : 'hover:border-yellow-500/40 hover:shadow-md'
 
   return (
-    <section id="about" className={clsx('py-28', isDark ? 'bg-black/40' : 'bg-gray-50/60')}>
+    <section id="about" className={clsx('py-16 md:py-28', isDark ? 'bg-black/40' : 'bg-gray-50/60')}>
       <div className="max-w-6xl mx-auto px-6">
 
         <FadeUp>

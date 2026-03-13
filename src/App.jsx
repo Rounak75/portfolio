@@ -33,19 +33,22 @@ import CommandPalette    from './components/CommandPalette.jsx'
 //
 // ✏️ Customise: change x/y values or set both to 0 for a
 //    pure fade with no movement.
+
+const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+
 const SECTION_VARIANTS = {
   hidden: (custom) => ({
     opacity: 0,
-    x: custom?.x ?? 0,
+    x: isMobile ? 0 : (custom?.x ?? 0),
     y: custom?.y ?? 40,
-    filter: 'blur(4px)',
+    ...(isMobile ? {} : { filter: 'blur(4px)' }),
   }),
   visible: {
     opacity: 1,
     x: 0,
     y: 0,
     filter: 'blur(0px)',
-    transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: isMobile ? 0.4 : 0.65, ease: [0.22, 1, 0.36, 1] },
   },
 }
 

@@ -32,7 +32,7 @@ export default function Projects({ isDark }) {
   return (
     <section
       id="projects"
-      className={clsx('py-28', isDark ? 'bg-black/40' : 'bg-gray-50/60')}
+      className={clsx('py-16 md:py-28', isDark ? 'bg-black/40' : 'bg-gray-50/60')}
     >
       <div className="max-w-6xl mx-auto px-6">
 

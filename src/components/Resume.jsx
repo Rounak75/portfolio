@@ -123,23 +123,23 @@ export default function Resume({ isDark }) {
               <motion.div
                 key="pdf"
                 initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 780, opacity: 1 }}
+                animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                 className="overflow-hidden"
               >
                 <div className={clsx('h-px mx-8', isDark ? 'bg-white/[0.07]' : 'bg-black/[0.07]')} />
 
-                <div className="p-4">
+                <div className="p-3 md:p-4">
                   <iframe
                     src={`${personal.resumeUrl}#toolbar=0&navpanes=0&scrollbar=1`}
                     className="w-full rounded-2xl"
-                    style={{ height: 720, border: 'none' }}
+                    style={{ height: 'min(720px, 60vh', border: 'none' }}
                     title="Resume Preview"
                   />
                 </div>
 
-                <div className="px-10 pb-8 text-center">
+                <div className="px-6 md:px-10 pb-8 pt-2 text-center">
                   <a
                     href={personal.resumeUrl}
                     download

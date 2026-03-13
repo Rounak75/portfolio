@@ -65,7 +65,7 @@ export default function Skills({ isDark }) {
   const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true })
 
   return (
-    <section id="skills" className="py-28" ref={ref}>
+    <section id="skills" className="py-16 md:py-28" ref={ref}>
       <div className="max-w-6xl mx-auto px-6">
 
         {/* Section header */}

@@ -161,7 +161,7 @@ export default function Hero({ isDark }) {
             {/* CTA Buttons */}
             <motion.div
               variants={itemVariants}
-              className="flex flex-wrap gap-4 mt-9"
+              className="flex gap-3 mt-9"
             >
               {/* Primary: Download Resume */}
               <a
@@ -196,7 +196,7 @@ export default function Hero({ isDark }) {
             {/* Social Icons */}
             <motion.div
               variants={itemVariants}
-              className="flex gap-3 mt-9"
+              className="flex gap-3 mt-6 md:mt-9"
             >
               {SOCIALS.map(({ icon: Icon, label, href }) => (
                 <a
@@ -225,9 +225,9 @@ export default function Hero({ isDark }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             // On mobile, show avatar above the text
-            className="flex justify-center order-first lg:order-last"
+            className="flex justify-center order-first lg:order-last mb-4 lg:mb-0"
           >
-            <div className="relative">
+            <div className="relative mx-8 sm:mx-0">
 
               {/* Avatar card */}
               <div className={clsx(
