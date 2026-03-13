@@ -11,13 +11,15 @@ import clsx from 'clsx'
 
 const MAX_TILT = 12
 const SPRING   = { stiffness: 300, damping: 28, mass: 0.5 }
+
+// Evaluated once at module level — stable, no re-render cost
 const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
 
 export default function ProjectCard({ project, isDark, onPreview }) {
   const cardRef  = useRef(null)
-  const [expanded, setExpanded] = useState(false) // mobile tap-to-expand
+  const [expanded, setExpanded] = useState(false)
 
-  // 3D tilt (desktop only)
+  // 3D tilt motion values — only wired up on desktop
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
   const springX = useSpring(mouseX, SPRING)
@@ -35,34 +37,40 @@ export default function ProjectCard({ project, isDark, onPreview }) {
   }
   const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0) }
 
+  // Shine background — static on mobile, dynamic on desktop
+  const shineBg = useTransform(
+    [shineX, shineY],
+    ([x, y]) => `radial-gradient(circle at ${x} ${y}, rgba(255,255,255,0.09) 0%, transparent 65%)`
+  )
+
   return (
+    // perspective: none on mobile so no 3D context is created at all
     <div style={{ perspective: isMobile ? 'none' : 900 }}>
       <motion.div
         ref={cardRef}
+        // Mouse handlers — desktop only
         onMouseMove={isMobile ? undefined : handleMouseMove}
         onMouseLeave={isMobile ? undefined : handleMouseLeave}
+        // 3D style — desktop only; empty object on mobile means no transform applied
         style={isMobile ? {} : { rotateX, rotateY, transformStyle: 'preserve-3d' }}
-        whileHover={{ scale: 1.02, z: 20 }}
+        // whileHover scale+z — desktop only; on mobile touch triggers hover and never resets
+        whileHover={isMobile ? undefined : { scale: 1.02, z: 20 }}
         transition={{ duration: 0.25 }}
         className={clsx(
           'rounded-2xl border overflow-hidden flex flex-col relative cursor-pointer group',
           'transition-colors duration-300',
           isDark
             ? 'bg-white/[0.04] border-white/[0.08] hover:border-yellow-500/30'
-            : 'bg-white/80 border-amber-200/60 shadow-sm hover:border-yellow-500/50 hover:shadow-lg hover:shadow-yellow-500/[0.08]'
+            : 'bg-white/80 border-amber-200/60 shadow-sm hover:border-yellow-500/50'
         )}
       >
-        {/* Shine overlay */}
-        <motion.div
-          className="absolute inset-0 pointer-events-none z-20 rounded-2xl"
-          style={{
-            background: isMobile ? 'none' : useTransform(
-              [shineX, shineY],
-              ([x, y]) => `radial-gradient(circle at ${x} ${y}, rgba(255,255,255,0.09) 0%, transparent 65%)`
-            ),
-            translateZ: isMobile ? 0 : 1,
-          }}
-        />
+        {/* Shine overlay — disabled on mobile */}
+        {!isMobile && (
+          <motion.div
+            className="absolute inset-0 pointer-events-none z-20 rounded-2xl"
+            style={{ background: shineBg, translateZ: 1 }}
+          />
+        )}
 
         {/* Thumbnail */}
         <div className={clsx(
@@ -70,9 +78,15 @@ export default function ProjectCard({ project, isDark, onPreview }) {
           isDark ? 'bg-black/60 border-white/[0.06]' : 'bg-slate-50 border-black/[0.05]'
         )}>
           <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/0 to-yellow-400/0 group-hover:from-yellow-500/[0.08] group-hover:to-yellow-400/[0.08] transition-all duration-300" />
-          <span className="relative z-10" style={{ display: 'block', transform: isMobile ? 'none' : 'translateZ(30px)' }}>
+
+          {/* translateZ only on desktop */}
+          <span
+            className="relative z-10"
+            style={{ display: 'block', transform: isMobile ? 'none' : 'translateZ(30px)' }}
+          >
             {project.emoji}
           </span>
+
           {project.featured && (
             <span className={clsx(
               'absolute top-3 right-3 px-2.5 py-1 rounded-full font-mono text-[0.65rem] font-semibold',
@@ -84,7 +98,7 @@ export default function ProjectCard({ project, isDark, onPreview }) {
             </span>
           )}
 
-          {/* Mobile tap hint — only on small screens */}
+          {/* Mobile tap hint */}
           <div className={clsx(
             'absolute bottom-2 left-1/2 -translate-x-1/2 md:hidden',
             'px-2.5 py-1 rounded-full text-[0.6rem] font-mono flex items-center gap-1',
@@ -95,11 +109,10 @@ export default function ProjectCard({ project, isDark, onPreview }) {
           </div>
         </div>
 
-        {/* Body */}
+        {/* Body — translateZ only on desktop */}
         <div
           className="p-6 flex flex-col flex-1"
           style={{ transform: isMobile ? 'none' : 'translateZ(10px)' }}
-          // On mobile, tap the card body to toggle expanded
           onClick={() => {
             if (window.innerWidth < 768) setExpanded(o => !o)
           }}
@@ -128,7 +141,7 @@ export default function ProjectCard({ project, isDark, onPreview }) {
             {project.shortDesc}
           </p>
 
-          {/* Tags — always visible */}
+          {/* Tags */}
           <div className="flex flex-wrap gap-1.5 mb-5">
             {project.tech.map(t => (
               <span key={t} className={clsx(
@@ -142,7 +155,7 @@ export default function ProjectCard({ project, isDark, onPreview }) {
             ))}
           </div>
 
-          {/* Action buttons — always visible on desktop, shown when expanded on mobile */}
+          {/* Action buttons */}
           <AnimatePresence>
             {(expanded || true) && (
               <motion.div
