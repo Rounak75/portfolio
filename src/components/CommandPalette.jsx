@@ -120,17 +120,17 @@ export default function CommandPalette({ isDark, onToggleTheme }) {
 
   // ── Global keyboard shortcut ──────────────────────
   useEffect(() => {
-    const handler = e => {
-      // Cmd+K (Mac) or Ctrl+K (Win/Linux)
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault()
-        open ? closePalette() : openPalette()
-      }
-      if (e.key === 'Escape' && open) closePalette()
+  const handler = e => {
+    // Cmd+K (Mac) or Ctrl+K (Win/Linux)
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault()
+      open ? closePalette() : openPalette()
     }
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
-  }, [open, openPalette, closePalette])
+    if (e.key === 'Escape' && open) closePalette()
+  }
+  window.addEventListener('keydown', handler)
+  return () => window.removeEventListener('keydown', handler)
+}, [open, openPalette, closePalette])
 
   // Focus input when opened
   useEffect(() => {
@@ -182,7 +182,7 @@ export default function CommandPalette({ isDark, onToggleTheme }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 3.5, duration: 0.4 }}
         className={clsx(
-          'fixed bottom-6 right-6 z-40',
+          'hidden md:flex fixed bottom-6 right-6 z-40',
           'flex items-center gap-2 px-3.5 py-2 rounded-xl',
           'text-xs font-mono font-medium border',
           'transition-all duration-200 hover:-translate-y-0.5',

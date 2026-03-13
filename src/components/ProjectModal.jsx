@@ -1,3 +1,19 @@
+// ═══════════════════════════════════════════════════════
+// src/components/ProjectModal.jsx
+//
+// Animated full-screen modal for project details.
+//
+// Props:
+//  • project  — project object or null (null = closed)
+//  • isDark   — theme
+//  • onClose  — callback to close the modal
+//
+// HOW IT WORKS:
+//  AnimatePresence in Projects.jsx detects when project 
+//  goes null→object and plays the enter animation.
+//  When onClose is called, it goes object→null and plays exit.
+// ═══════════════════════════════════════════════════════
+
 import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Github, ExternalLink } from 'lucide-react'
@@ -11,63 +27,60 @@ export default function ProjectModal({ project, isDark, onClose }) {
     return () => window.removeEventListener('keydown', handler)
   }, [onClose])
 
-  // Lock scroll on <html> — works on all browsers + iOS Safari
+  // Prevent body scroll while modal is open
   useEffect(() => {
-    if (project) {
-      document.documentElement.classList.add('modal-open')
-    }
-    return () => {
-      document.documentElement.classList.remove('modal-open')
-    }
+    document.body.style.overflow = project ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
   }, [project])
 
   return (
+    // AnimatePresence handles mount/unmount animations
     <AnimatePresence>
       {project && (
-        // Backdrop — fixed, centered, does NOT scroll
+        // Backdrop
         <motion.div
-          className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6"
+          className="fixed inset-0 z-[200] flex items-center justify-center p-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.22 }}
-          style={{ background: 'rgba(4,6,12,0.85)', backdropFilter: 'blur(14px)' }}
+          transition={{ duration: 0.25 }}
+          // Click backdrop to close
           onClick={onClose}
+          style={{ background: 'rgba(4,6,12,0.82)', backdropFilter: 'blur(14px)' }}
         >
-          {/* Modal card — this is the scroll container, not the backdrop */}
+          {/* Modal card — stop propagation so clicking card doesn't close */}
           <motion.div
             className={clsx(
-              'w-full max-w-[640px] rounded-2xl border',
-              // max-h + overflow-y-auto = card scrolls internally on small screens
-              'max-h-[90vh] overflow-y-auto overscroll-contain',
+              'w-full max-w-[640px] max-h-[90vh] overflow-y-auto',
+              'rounded-2xl border',
               isDark
-                ? 'bg-[#111111] border-yellow-500/20'
-                : 'bg-white border-amber-200/70 shadow-xl'
+                ? 'bg-navy-800 border-cyan-400/25'
+                : 'bg-white border-cyan-200'
             )}
-            initial={{ scale: 0.93, y: 16, opacity: 0 }}
-            animate={{ scale: 1,    y: 0,  opacity: 1 }}
-            exit={{    scale: 0.93, y: 16, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 340, damping: 30 }}
+            initial={{ scale: 0.9, y: 30, opacity: 0 }}
+            animate={{ scale: 1, y: 0, opacity: 1 }}
+            exit={{ scale: 0.92, y: 20, opacity: 0 }}
+            // Spring = bouncy, natural-feeling animation
+            transition={{ type: 'spring', stiffness: 320, damping: 28 }}
             onClick={e => e.stopPropagation()}
           >
-            {/* Emoji hero */}
+            {/* Emoji hero area */}
             <div className={clsx(
-              'h-44 sm:h-52 flex items-center justify-center text-[5rem] sm:text-[6rem]',
-              'rounded-t-2xl bg-gradient-to-br sticky-none',
+              'h-52 flex items-center justify-center text-[6rem]',
+              'rounded-t-2xl bg-gradient-to-br',
               isDark
-                ? 'from-yellow-500/[0.06] to-yellow-400/[0.04] bg-gradient-to-br'
-                : 'from-amber-50 to-yellow-50 bg-gradient-to-br'
+                ? 'from-cyan-400/[0.08] to-violet-400/[0.08]'
+                : 'from-cyan-50 to-violet-50'
             )}>
               {project.emoji}
             </div>
 
             {/* Body */}
-            <div className="p-6 sm:p-8">
-
+            <div className="p-8">
               {/* Title row + close button */}
               <div className="flex items-start justify-between mb-6">
-                <div className="pr-4">
-                  <div className="font-mono text-xs text-yellow-500 uppercase tracking-[0.1em] mb-1">
+                <div>
+                  <div className="font-mono text-xs text-cyan-400 uppercase tracking-[0.1em] mb-1">
                     {project.category.join(' · ')}
                   </div>
                   <h2 className="font-display font-extrabold text-xl leading-tight">
@@ -94,7 +107,7 @@ export default function ProjectModal({ project, isDark, onClose }) {
                 </button>
               </div>
 
-              {/* About */}
+              {/* About section */}
               <div className={clsx(
                 'font-mono text-[0.7rem] uppercase tracking-[0.1em] mb-2',
                 isDark ? 'text-slate-500' : 'text-slate-400'
@@ -117,12 +130,15 @@ export default function ProjectModal({ project, isDark, onClose }) {
               </div>
               <div className="flex flex-wrap gap-2 mb-8">
                 {project.tech.map(t => (
-                  <span key={t} className={clsx(
-                    'font-mono text-xs px-3 py-1 rounded-lg',
-                    isDark
-                      ? 'bg-yellow-500/10 border border-yellow-500/20 text-yellow-500'
-                      : 'bg-amber-50 border border-amber-200 text-amber-700'
-                  )}>
+                  <span
+                    key={t}
+                    className={clsx(
+                      'font-mono text-xs px-3 py-1 rounded-lg',
+                      isDark
+                        ? 'bg-cyan-400/10 border border-cyan-400/20 text-cyan-400'
+                        : 'bg-cyan-50 border border-cyan-200 text-cyan-700'
+                    )}
+                  >
                     {t}
                   </span>
                 ))}
@@ -138,7 +154,7 @@ export default function ProjectModal({ project, isDark, onClose }) {
                     'flex-1 flex items-center justify-center gap-2',
                     'py-3 rounded-xl text-sm font-semibold border transition-all duration-200',
                     isDark
-                      ? 'bg-white/[0.05] border-white/[0.1] text-slate-200 hover:bg-white/[0.09] hover:border-yellow-500/30'
+                      ? 'bg-white/[0.05] border-white/[0.1] text-slate-200 hover:bg-white/[0.09] hover:border-cyan-400/30'
                       : 'bg-black/[0.04] border-black/[0.08] text-slate-700 hover:bg-black/[0.08]'
                   )}
                 >
@@ -150,14 +166,13 @@ export default function ProjectModal({ project, isDark, onClose }) {
                   rel="noopener noreferrer"
                   className="flex-1 flex items-center justify-center gap-2
                              py-3 rounded-xl text-sm font-semibold text-white
-                             bg-gradient-to-r from-yellow-600 to-yellow-400
-                             hover:shadow-xl hover:shadow-yellow-500/25 hover:-translate-y-0.5
+                             bg-gradient-to-r from-cyan-400 to-violet-400
+                             hover:shadow-xl hover:shadow-cyan-400/25 hover:-translate-y-0.5
                              transition-all duration-200"
                 >
                   <ExternalLink size={15} /> Live Demo
                 </a>
               </div>
-
             </div>
           </motion.div>
         </motion.div>
