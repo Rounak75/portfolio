@@ -9,8 +9,10 @@
 //     unique direction for visual variety
 // ═══════════════════════════════════════════════════════
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+// ADD this line after the existing imports
+import { useRippleTheme } from './hooks/useRippleTheme.js'
 
 import Navbar    from './components/Navbar.jsx'
 import Hero      from './components/Hero.jsx'
@@ -66,19 +68,7 @@ function SectionReveal({ children, custom }) {
 export default function App() {
 
   // ── Theme ─────────────────────────────────────────
-  const [isDark, setIsDark] = useState(() => {
-    const saved = localStorage.getItem('theme')
-    return saved ? saved === 'dark' : true
-  })
-
-  useEffect(() => {
-    const html = document.documentElement
-    html.classList.toggle('dark',  isDark)
-    html.classList.toggle('light', !isDark)
-    localStorage.setItem('theme', isDark ? 'dark' : 'light')
-  }, [isDark])
-
-  const toggleTheme = () => setIsDark(p => !p)
+  const { isDark, triggerRipple } = useRippleTheme(true)
 
   // ── Loading screen ────────────────────────────────
   const [loading, setLoading] = useState(true)
@@ -98,7 +88,7 @@ export default function App() {
       {!loading && <ScrollProgressBar />}
 
       {/* Command palette — always mounted, opens on Cmd+K */}
-      <CommandPalette isDark={isDark} onToggleTheme={toggleTheme} />
+      <CommandPalette isDark={isDark} onToggleTheme={triggerRipple} />
 
       {/* Background orbs */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
@@ -112,7 +102,7 @@ export default function App() {
 
       {/* Main content */}
       <div className="relative z-10">
-        <Navbar isDark={isDark} toggleTheme={toggleTheme} />
+        <Navbar isDark={isDark} triggerRipple={triggerRipple} />
 
         <main>
           {/* Hero — no entrance delay, it's the first thing seen */}

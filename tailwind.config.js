@@ -21,22 +21,22 @@ export default {
       colors: {
         // Main dark background
         navy: {
-          950: '#05080f',
-          900: '#080b14',
-          800: '#0d1220',
-          700: '#121a2e',
+          950: '#000000',
+          900: '#080808',
+          800: '#111111',
+          700: '#1a1a1a',
         },
         // Accent / highlight color
         cyan: {
-          400: '#63b3ed',
-          500: '#4fa8e8',
+          400: '#d4a843',
+          500: '#c49a35',
         },
         violet: {
-          400: '#ff4ae7',
+          400: '#f0c060',
         },
         emerald: {
-          400: '#34d399',
-        }
+          400: '#e8b84b',
+        },
       },
 
       // ✏️ CUSTOMISE: Fonts — imported in index.css

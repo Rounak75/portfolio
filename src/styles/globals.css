@@ -12,16 +12,31 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Smooth theme transition ────────────────────────────
+   Every element fades gracefully when dark/light switches.
+   The 350ms duration feels instant but not jarring.
+   background-color, color, border-color cover 99% of cases.
+   ──────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  transition:
+    background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    color            0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color     0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow       0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* ─────────────────────────────────────────────
    CSS CUSTOM PROPERTIES (Design Tokens)
    These vars are used in custom CSS below.
    Tailwind colors are defined in tailwind.config.js
    ───────────────────────────────────────────── */
 :root {
-  /* Glow colors used for box-shadows */
-  --glow-cyan:   rgba(99, 179, 237, 0.18);
-  --glow-violet: rgba(167, 139, 250, 0.18);
-  --glow-green:  rgba(52, 211, 153, 0.15);
+  --gold:          #d4a843;
+  --gold-light:    #f0c060;
+  --gold-dim:      rgba(212, 168, 67, 0.18);
+  --gold-glow:     rgba(212, 168, 67, 0.25);
 
   /* Transition shorthand */
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
@@ -55,18 +70,20 @@ body {
    CUSTOM SCROLLBAR (WebKit browsers: Chrome, Edge, Safari)
    ───────────────────────────────────────────── */
 ::-webkit-scrollbar       { width: 4px; }
-::-webkit-scrollbar-track { background: #080b14; }
-::-webkit-scrollbar-thumb { background: #63b3ed; border-radius: 99px; }
+::-webkit-scrollbar-track { background: #080808; }
+::-webkit-scrollbar-thumb { background: #d4a843; border-radius: 99px; }
 
 /* ─────────────────────────────────────────────
    GRADIENT TEXT UTILITY
    Usage: <span className="gradient-text">Hello</span>
    ───────────────────────────────────────────── */
 .gradient-text {
-  background: linear-gradient(135deg, #63b3ed 0%, #a78bfa 50%, #34d399 100%);
+  background: linear-gradient(135deg, #d4a843 0%, #f0c060 40%, #d4a843 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  background-size: 200% auto;
+  animation: gold-shimmer 4s linear infinite;
 }
 
 /* ─────────────────────────────────────────────
@@ -90,28 +107,29 @@ body {
 .orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.15;
+  filter: blur(90px);
+  opacity: 0.12;
   animation: drift 18s ease-in-out infinite alternate;
 }
 .orb-1 {
   width: 600px; height: 600px;
-  background: radial-gradient(circle, #63b3ed, transparent);
+  background: radial-gradient(circle, #d4a843, transparent);
   top: -100px; left: -100px;
   animation-delay: 0s;
 }
 .orb-2 {
   width: 500px; height: 500px;
-  background: radial-gradient(circle, #a78bfa, transparent);
+  background: radial-gradient(circle, #f0c060, transparent);
   top: 40%; right: -150px;
   animation-delay: -6s;
 }
 .orb-3 {
   width: 400px; height: 400px;
-  background: radial-gradient(circle, #34d399, transparent);
+  background: radial-gradient(circle, #c49a35, transparent);
   bottom: -100px; left: 30%;
   animation-delay: -12s;
 }
+
 
 @keyframes drift {
   0%   { transform: translate(0, 0) scale(1); }
@@ -125,11 +143,11 @@ body {
 .skill-fill {
   height: 100%;
   border-radius: 9999px;
-  background: linear-gradient(90deg, #63b3ed, #a78bfa);
+  background: linear-gradient(90deg, #d4a843, #f0c060);
   width: 0%;
   /* Width animates to the target value when triggered */
   transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 10px var(--glow-cyan);
+  box-shadow: 0 0 12px rgba(212, 168, 67, 0.4);
 }
 
 /* ─────────────────────────────────────────────
@@ -157,8 +175,9 @@ body {
 /* ─────────────────────────────────────────────
    GLOW EFFECTS (used via Tailwind className strings)
    ───────────────────────────────────────────── */
-.glow-cyan   { box-shadow: 0 0 30px var(--glow-cyan); }
-.glow-violet { box-shadow: 0 0 30px var(--glow-violet); }
+.glow-gold   { box-shadow: 0 0 30px rgba(212, 168, 67, 0.25); }
+.glow-cyan   { box-shadow: 0 0 30px rgba(212, 168, 67, 0.18); }
+.glow-violet { box-shadow: 0 0 30px rgba(240, 192, 96, 0.18); }
 
 /* Button shimmer sweep on hover */
 .btn-shimmer {
@@ -195,15 +214,15 @@ body {
    ───────────────────────────────────────────── */
 .form-input:focus {
   outline: none;
-  border-color: #63b3ed;
-  box-shadow: 0 0 0 3px rgba(99, 179, 237, 0.12);
+  border-color: #d4a843;
+  box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.15);
 }
 
 /* ─────────────────────────────────────────────
    MOBILE NAV MENU BACKDROP
    ───────────────────────────────────────────── */
 .mobile-menu-backdrop {
-  background: rgba(8, 11, 20, 0.97);
+  background: rgba(8, 8, 8, 0.97);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
@@ -216,5 +235,97 @@ body {
   /* All the dark backgrounds become light */
 }
 :root:not(.dark) .orb {
-  opacity: 0.08; /* dimmer orbs in light mode */
+  opacity: 0.07; /* dimmer orbs in light mode */
+}
+
+/* ─────────────────────────────────────────────
+   REDUCED MOTION SUPPORT
+   Respects the OS "reduce motion" setting.
+   Disables all transitions and animations for
+   users who have motion sensitivity.
+   This is a WCAG accessibility requirement.
+   ───────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration:        0.01ms !important;
+    animation-iteration-count: 1      !important;
+    transition-duration:       0.01ms !important;
+    scroll-behavior:           auto   !important;
+  }
+
+  /* Framer Motion respects this automatically when
+     you set motionSafe variants — but this CSS rule
+     is a hard fallback for any CSS animations too. */
+}
+
+/* ─────────────────────────────────────────────
+   SCROLL-TRIGGERED TIMELINE LINE
+   The ::before connector line now draws itself
+   from top → full height as you scroll.
+   Uses animation-timeline (Chrome 115+),
+   with a graceful fallback for older browsers.
+   ───────────────────────────────────────────── */
+@supports (animation-timeline: scroll()) {
+  .timeline-draw::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 30px;
+    width: 1px;
+    background: linear-gradient(to bottom, rgba(212,168,67,0.5), rgba(240,192,96,0.2));
+    animation: draw-line linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 60%;
+    transform-origin: top;
+  }
+
+  @keyframes draw-line {
+    from { height: 0;    opacity: 0; }
+    to   { height: 100%; opacity: 1; }
+  }
+}
+
+/* Fallback for browsers that don't support animation-timeline */
+@supports not (animation-timeline: scroll()) {
+  .timeline-draw::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 30px;
+    bottom: -24px;
+    width: 1px;
+    background: rgba(212, 168, 67, 0.15);
+  }
+}
+
+/* ─────────────────────────────────────────────
+   FLOATING DOCK — hide on mobile
+   The dock is desktop-only. On mobile the
+   existing navbar is already compact enough.
+   ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .floating-dock {
+    display: none;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   SKELETON SHIMMER ANIMATION
+   ───────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(212,168,67,0.04) 25%,
+    rgba(212,168,67,0.10) 50%,
+    rgba(212,168,67,0.04) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
 }
