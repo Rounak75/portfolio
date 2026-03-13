@@ -64,7 +64,7 @@ export default function Navbar({ isDark, triggerRipple }) {
           'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
           scrolled
             ? isDark
-              ? 'bg-navy-900/80 backdrop-blur-xl border-b border-white/[0.06] py-3 shadow-xl'
+              ? 'bg-black/80 backdrop-blur-xl border-b border-white/[0.06] py-3 shadow-xl'
               : 'bg-white/80 backdrop-blur-xl border-b border-black/[0.06] py-3 shadow-md'
             : 'py-5'
         )}
@@ -90,9 +90,9 @@ export default function Navbar({ isDark, triggerRipple }) {
                     layoutId="active-pill"
                     className="absolute inset-0 rounded-lg -z-10"
                     style={{
-                      background: 'linear-gradient(135deg, rgba(99,179,237,0.25), rgba(167,139,250,0.25))',
-                      border: '1px solid rgba(99,179,237,0.25)',
-                      boxShadow: '0 0 12px rgba(99,179,237,0.15)',
+                      background: 'linear-gradient(135deg, rgba(212,168,67,0.25), rgba(240,192,96,0.25))',
+                      border: '1px solid rgba(212,168,67,0.25)',
+                      boxShadow: '0 0 12px rgba(212,168,67,0.2)',
                     }}
                     transition={{ type: 'spring', stiffness: 380, damping: 32 }}
                   />
@@ -110,8 +110,8 @@ export default function Navbar({ isDark, triggerRipple }) {
               className={clsx(
                 'w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200',
                 isDark
-                  ? 'bg-white/[0.06] text-slate-400 hover:text-cyan-400 hover:bg-white/10'
-                  : 'bg-black/[0.05] text-slate-500 hover:text-cyan-500 hover:bg-black/10'
+                  ? 'bg-white/[0.06] text-slate-400 hover:text-yellow-500 hover:bg-white/10'
+                  : 'bg-black/[0.05] text-slate-500 hover:text-yellow-500 hover:bg-black/10'
               )}
             >
               <motion.div
@@ -172,7 +172,7 @@ export default function Navbar({ isDark, triggerRipple }) {
             className={clsx(
               'fixed top-0 right-0 bottom-0 z-50 w-72 md:hidden flex flex-col',
               isDark
-                ? 'bg-navy-900 border-l border-white/[0.08]'
+                ? 'bg-black border-l border-white/[0.08]'
                 : 'bg-white border-l border-black/[0.07] shadow-2xl'
             )}
           >
@@ -211,13 +211,13 @@ export default function Navbar({ isDark, triggerRipple }) {
                     className={clsx(
                       'flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-200',
                       isActive
-                        ? 'text-cyan-400 bg-cyan-400/[0.1] border border-cyan-400/20'
+                        ? 'text-yellow-500 bg-yellow-500/[0.1] border border-yellow-500/20'
                         : isDark
                           ? 'text-slate-300 hover:bg-white/[0.06] hover:text-white'
                           : 'text-slate-600 hover:bg-black/[0.04] hover:text-slate-900'
                     )}
                   >
-                    <Icon size={16} className={isActive ? 'text-cyan-400' : isDark ? 'text-slate-500' : 'text-slate-400'} />
+                    <Icon size={16} className={isActive ? 'text-yellow-500' : isDark ? 'text-slate-500' : 'text-slate-400'} />
                     {link.label}
                     {isActive && (
                       <motion.span
@@ -240,8 +240,8 @@ export default function Navbar({ isDark, triggerRipple }) {
                 onClick={closeMenu}
                 className="w-full flex items-center justify-center gap-2 py-3 rounded-xl
                            text-sm font-semibold text-white
-                           bg-gradient-to-r from-cyan-400 to-violet-400
-                           hover:shadow-lg hover:shadow-cyan-400/20 transition-all duration-200"
+                           bg-gradient-to-r from-yellow-600 to-yellow-400
+                           hover:shadow-lg hover:shadow-yellow-500/20 transition-all duration-200"
               >
                 Get in Touch ↗
               </a>

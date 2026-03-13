@@ -90,7 +90,7 @@ export default function Hero({ isDark }) {
                 'inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full text-xs font-semibold',
                 'border font-mono tracking-wide',
                 isDark
-                  ? 'bg-white/[0.04] border-cyan-400/30 text-cyan-400'
+                  ? 'bg-white/[0.04] border-yellow-500/30 text-yellow-500'
                   : 'bg-cyan-50 border-cyan-300 text-cyan-600'
               )}>
                 {/* Pulsing green dot = "online / available" */}
@@ -129,7 +129,7 @@ export default function Hero({ isDark }) {
               <span
                 className="font-semibold"
                 style={{
-                  background: 'linear-gradient(135deg, #63b3ed, #a78bfa)',
+                  background: 'linear-gradient(135deg, #d4a843, #f0c060)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                 }}
@@ -139,7 +139,7 @@ export default function Hero({ isDark }) {
 
               {/* Blinking cursor — a simple animated pipe character */}
               <motion.span
-                className="font-light text-cyan-400"
+                className="font-light text-yellow-500"
                 animate={{ opacity: [1, 0, 1] }}
                 transition={{ duration: 0.9, repeat: Infinity, ease: 'linear' }}
               >
@@ -169,8 +169,8 @@ export default function Hero({ isDark }) {
                 download
                 className="btn-shimmer flex items-center gap-2 px-7 py-3.5 rounded-xl
                            font-semibold text-sm text-white
-                           bg-gradient-to-r from-cyan-400 to-violet-400
-                           hover:-translate-y-0.5 hover:shadow-xl hover:shadow-cyan-400/25
+                           bg-gradient-to-r from-yellow-600 to-yellow-400
+                           hover:-translate-y-0.5 hover:shadow-xl hover:shadow-yellow-500/25
                            transition-all duration-200"
               >
                 <Download size={15} />
@@ -184,8 +184,8 @@ export default function Hero({ isDark }) {
                   'flex items-center gap-2 px-7 py-3.5 rounded-xl font-medium text-sm',
                   'border transition-all duration-200 hover:-translate-y-0.5',
                   isDark
-                    ? 'bg-white/[0.04] border-white/[0.08] text-slate-300 hover:bg-white/[0.08] hover:border-cyan-400/30'
-                    : 'bg-black/[0.04] border-black/[0.08] text-slate-600 hover:bg-black/[0.07] hover:border-cyan-400/50'
+                    ? 'bg-white/[0.04] border-white/[0.08] text-slate-300 hover:bg-white/[0.08] hover:border-yellow-500/30'
+                    : 'bg-black/[0.04] border-black/[0.08] text-slate-600 hover:bg-black/[0.07] hover:border-yellow-500/50'
                 )}
               >
                 View Projects
@@ -209,7 +209,7 @@ export default function Hero({ isDark }) {
                     'w-10 h-10 rounded-xl flex items-center justify-center',
                     'border transition-all duration-200 hover:-translate-y-1',
                     isDark
-                      ? 'bg-white/[0.04] border-white/[0.08] text-slate-400 hover:text-cyan-400 hover:border-cyan-400/30 hover:shadow-lg hover:shadow-cyan-400/15'
+                      ? 'bg-white/[0.04] border-white/[0.08] text-slate-400 hover:text-yellow-500 hover:border-yellow-500/30 hover:shadow-lg hover:shadow-yellow-500/15'
                       : 'bg-black/[0.04] border-black/[0.08] text-slate-500 hover:text-cyan-500 hover:border-cyan-300 hover:shadow-md'
                   )}
                 >
@@ -235,8 +235,8 @@ export default function Hero({ isDark }) {
                 'border flex flex-col items-center justify-center',
                 'relative overflow-hidden',
                 isDark
-                  ? 'bg-navy-800 border-cyan-400/20 shadow-[0_0_60px_rgba(99,179,237,0.12),0_0_100px_rgba(167,139,250,0.1)]'
-                  : 'bg-white border-cyan-300/40 shadow-[0_0_50px_rgba(99,179,237,0.1)]'
+                  ? 'bg-neutral-900 border-yellow-500/20 shadow-[0_0_60px_rgba(212,168,67,0.12),0_0_100px_rgba(167,139,250,0.1)]'
+                  : 'bg-white border-cyan-300/40 shadow-[0_0_50px_rgba(212,168,67,0.1)]'
               )}>
                 {/* Subtle gradient overlay inside card */}
                 <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/[0.07] to-violet-400/[0.07]" />
@@ -268,10 +268,10 @@ export default function Hero({ isDark }) {
                     chip.pos,
                     isDark
                       ? chip.accent === 'cyan'
-                        ? 'bg-navy-800/90 border-cyan-400/30 text-cyan-400'
+                        ? 'bg-neutral-900/90 border-yellow-500/30 text-yellow-500'
                         : chip.accent === 'violet'
-                          ? 'bg-navy-800/90 border-violet-400/30 text-violet-400'
-                          : 'bg-navy-800/90 border-emerald-400/30 text-emerald-400'
+                          ? 'bg-neutral-900/90 border-violet-400/30 text-violet-400'
+                          : 'bg-neutral-900/90 border-emerald-400/30 text-emerald-400'
                       : chip.accent === 'cyan'
                         ? 'bg-white/90 border-cyan-300 text-cyan-600 shadow-md'
                         : chip.accent === 'violet'
