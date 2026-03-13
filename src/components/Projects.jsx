@@ -32,7 +32,7 @@ export default function Projects({ isDark }) {
   return (
     <section
       id="projects"
-      className={clsx('py-28', isDark ? 'bg-navy-800/40' : 'bg-slate-100/60')}
+      className={clsx('py-28', isDark ? 'bg-black/40' : 'bg-gray-50/60')}
     >
       <div className="max-w-6xl mx-auto px-6">
 
@@ -69,7 +69,7 @@ export default function Projects({ isDark }) {
                   ? 'bg-gradient-to-r from-cyan-400 to-violet-400 border-transparent text-white shadow-lg shadow-cyan-400/20'
                   // Inactive: ghost style
                   : isDark
-                    ? 'bg-white/[0.04] border-white/[0.08] text-slate-400 hover:border-cyan-400/30 hover:text-slate-200'
+                    ? 'bg-white/[0.04] border-white/[0.08] text-slate-400 hover:border-yellow-500/30 hover:text-slate-200'
                     : 'bg-white border-black/[0.08] text-slate-500 hover:border-cyan-300 hover:text-slate-700'
               )}
             >

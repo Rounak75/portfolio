@@ -187,7 +187,7 @@ export default function CommandPalette({ isDark, onToggleTheme }) {
           'text-xs font-mono font-medium border',
           'transition-all duration-200 hover:-translate-y-0.5',
           isDark
-            ? 'bg-navy-900/80 border-white/[0.1] text-slate-400 hover:text-slate-200 hover:border-cyan-400/30 backdrop-blur-md'
+            ? 'bg-black/80 border-white/[0.1] text-slate-400 hover:text-slate-200 hover:border-yellow-500/30 backdrop-blur-md'
             : 'bg-white/90 border-black/[0.1] text-slate-500 hover:text-slate-800 hover:border-cyan-300 backdrop-blur-md shadow-md'
         )}
       >
@@ -221,7 +221,7 @@ export default function CommandPalette({ isDark, onToggleTheme }) {
                 'w-full max-w-xl rounded-2xl overflow-hidden',
                 'border shadow-2xl',
                 isDark
-                  ? 'bg-navy-900/95 border-white/[0.1] backdrop-blur-xl'
+                  ? 'bg-black/95 border-white/[0.1] backdrop-blur-xl'
                   : 'bg-white border-black/[0.1] backdrop-blur-xl shadow-slate-200/80'
               )}
             >
@@ -283,7 +283,7 @@ export default function CommandPalette({ isDark, onToggleTheme }) {
                             {/* Icon or emoji */}
                             <div className={clsx('w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-base',
                               isActive
-                                ? 'bg-gradient-to-br from-cyan-400/25 to-violet-400/25 text-cyan-400'
+                                ? 'bg-gradient-to-br from-cyan-400/25 to-violet-400/25 text-yellow-500'
                                 : isDark ? 'bg-white/[0.05] text-slate-500' : 'bg-black/[0.05] text-slate-500'
                             )}>
                               {cmd.emoji ? cmd.emoji : <Icon size={14} />}
@@ -304,7 +304,7 @@ export default function CommandPalette({ isDark, onToggleTheme }) {
                             </div>
 
                             {/* Arrow hint on active */}
-                            {isActive && <ArrowRight size={14} className="text-cyan-400 flex-shrink-0" />}
+                            {isActive && <ArrowRight size={14} className="text-yellow-500 flex-shrink-0" />}
                           </button>
                         )
                       })}

@@ -22,8 +22,8 @@ function SkillBar({ skill, isDark, inView }) {
     <div className={clsx(
       'rounded-2xl border p-5 transition-all duration-300',
       isDark
-        ? 'bg-white/[0.04] border-white/[0.08] hover:border-cyan-400/25 hover:shadow-lg hover:shadow-cyan-400/[0.07]'
-        : 'bg-white border-black/[0.07] shadow-sm hover:border-cyan-300/50 hover:shadow-md'
+        ? 'bg-white/[0.04] border-white/[0.08] hover:border-yellow-500/25 hover:shadow-lg hover:shadow-cyan-400/[0.07]'
+        : 'bg-white border-black/[0.07] shadow-sm hover:border-yellow-500-300/50 hover:shadow-md'
     )}>
       {/* Top row: icon + name + percentage */}
       <div className="flex items-center justify-between mb-3">
@@ -38,7 +38,7 @@ function SkillBar({ skill, isDark, inView }) {
           <span className="font-semibold text-sm">{skill.name}</span>
         </div>
         {/* Percentage label */}
-        <span className="font-mono text-xs font-semibold text-cyan-400">
+        <span className="font-mono text-xs font-semibold text-yellow-500">
           {skill.pct}%
         </span>
       </div>
@@ -117,8 +117,8 @@ export default function Skills({ isDark }) {
                 'px-4 py-2 rounded-full text-sm font-medium cursor-default',
                 'border transition-all duration-200',
                 isDark
-                  ? 'bg-white/[0.04] border-white/[0.08] text-slate-300 hover:border-cyan-400/30 hover:text-cyan-400 hover:shadow-md hover:shadow-cyan-400/10'
-                  : 'bg-white border-black/[0.08] text-slate-600 hover:border-cyan-300 hover:text-cyan-600 hover:shadow-sm'
+                  ? 'bg-white/[0.04] border-white/[0.08] text-slate-300 hover:border-yellow-500/30 hover:text-yellow-500 hover:shadow-md hover:shadow-cyan-400/10'
+                  : 'bg-white border-black/[0.08] text-slate-600 hover:border-yellow-500-300 hover:text-cyan-600 hover:shadow-sm'
               )}
             >
               {chip}

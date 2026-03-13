@@ -69,13 +69,13 @@ function EmailCopyCard({ isDark, surface }) {
     <div className={clsx('flex items-center gap-4 px-4 py-3.5 rounded-xl border transition-all duration-200', surface)}>
       {/* Icon */}
       <div className={clsx('w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0', isDark ? 'bg-white/[0.06]' : 'bg-black/[0.05]')}>
-        <Mail size={16} className="text-cyan-400" />
+        <Mail size={16} className="text-yellow-500" />
       </div>
 
       {/* Text */}
       <div className="flex-1 min-w-0">
         <div className="font-mono text-[0.65rem] uppercase tracking-[0.1em] text-slate-500 mb-0.5">Email</div>
-        <a href={personal.socials.email} className="text-sm font-medium hover:text-cyan-400 transition-colors truncate block">
+        <a href={personal.socials.email} className="text-sm font-medium hover:text-yellow-500 transition-colors truncate block">
           {personal.email}
         </a>
       </div>
@@ -91,7 +91,7 @@ function EmailCopyCard({ isDark, surface }) {
           copied
             ? 'bg-emerald-400/15 text-emerald-400'
             : isDark
-              ? 'bg-white/[0.06] text-slate-400 hover:bg-cyan-400/15 hover:text-cyan-400'
+              ? 'bg-white/[0.06] text-slate-400 hover:bg-yellow-500/15 hover:text-yellow-500'
               : 'bg-black/[0.05] text-slate-400 hover:bg-cyan-50 hover:text-cyan-500'
         )}
       >
@@ -122,10 +122,10 @@ function ContactCard({ icon: Icon, label, value, href, isDark, surface }) {
   return href ? (
     <a href={href} target={href.startsWith('mailto') ? undefined : '_blank'}
       rel="noopener noreferrer"
-      className={clsx('flex items-center gap-4 px-4 py-3.5 rounded-xl border transition-all duration-200 hover:translate-x-1', surface, isDark ? 'hover:border-cyan-400/25' : 'hover:border-cyan-300/50')}
+      className={clsx('flex items-center gap-4 px-4 py-3.5 rounded-xl border transition-all duration-200 hover:translate-x-1', surface, isDark ? 'hover:border-yellow-500/25' : 'hover:border-cyan-300/50')}
     >
       <div className={clsx('w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0', isDark ? 'bg-white/[0.06]' : 'bg-black/[0.05]')}>
-        <Icon size={16} className="text-cyan-400" />
+        <Icon size={16} className="text-yellow-500" />
       </div>
       <div>
         <div className="font-mono text-[0.65rem] uppercase tracking-[0.1em] text-slate-500 mb-0.5">{label}</div>
@@ -135,7 +135,7 @@ function ContactCard({ icon: Icon, label, value, href, isDark, surface }) {
   ) : (
     <div className={clsx('flex items-center gap-4 px-4 py-3.5 rounded-xl border', surface)}>
       <div className={clsx('w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0', isDark ? 'bg-white/[0.06]' : 'bg-black/[0.05]')}>
-        <Icon size={16} className="text-cyan-400" />
+        <Icon size={16} className="text-yellow-500" />
       </div>
       <div>
         <div className="font-mono text-[0.65rem] uppercase tracking-[0.1em] text-slate-500 mb-0.5">{label}</div>
@@ -152,7 +152,7 @@ function FieldLabel({ config, isDark }) {
     <label className={clsx('flex items-center gap-1.5 text-xs font-semibold tracking-wide', isDark ? 'text-slate-400' : 'text-slate-600')}>
       {Icon && <Icon size={12} className={isDark ? 'text-slate-500' : 'text-slate-400'} />}
       {config.label}
-      {config.required && <span className="text-cyan-400 ml-0.5">*</span>}
+      {config.required && <span className="text-yellow-500 ml-0.5">*</span>}
     </label>
   )
 }
@@ -219,16 +219,16 @@ export default function Contact({ isDark }) {
   const surface  = isDark ? 'bg-white/[0.04] border-white/[0.08]' : 'bg-white border-black/[0.07] shadow-sm'
   const inputCls = field => clsx(
     'w-full px-4 py-3 rounded-xl text-sm border transition-all duration-200 outline-none font-body',
-    isDark ? 'bg-navy-900/80 text-slate-100 border-white/[0.1] placeholder:text-slate-600 focus:bg-navy-900'
+    isDark ? 'bg-black/80 text-slate-100 border-white/[0.1] placeholder:text-slate-600 focus:bg-black'
            : 'bg-slate-50 text-slate-900 border-black/[0.1] placeholder:text-slate-400 focus:bg-white',
     errors[field]
       ? 'border-red-400/70 focus:border-red-400 focus:shadow-[0_0_0_3px_rgba(248,113,113,0.12)]'
-      : isDark ? 'focus:border-cyan-400/60 focus:shadow-[0_0_0_3px_rgba(99,179,237,0.1)]'
-               : 'focus:border-cyan-400 focus:shadow-[0_0_0_3px_rgba(99,179,237,0.12)]'
+      : isDark ? 'focus:border-yellow-500/60 focus:shadow-[0_0_0_3px_rgba(99,179,237,0.1)]'
+               : 'focus:border-yellow-500 focus:shadow-[0_0_0_3px_rgba(99,179,237,0.12)]'
   )
 
   return (
-    <section id="contact" className={clsx('py-28', isDark ? 'bg-navy-800/40' : 'bg-slate-100/60')}>
+    <section id="contact" className={clsx('py-28', isDark ? 'bg-neutral-900/40' : 'bg-gray-50/60')}>
       <div className="max-w-6xl mx-auto px-6">
 
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
@@ -302,7 +302,7 @@ export default function Contact({ isDark }) {
                   <div className="text-5xl mb-4">{MESSAGES.error.emoji}</div>
                   <h4 className="font-display font-bold text-lg mb-2">{MESSAGES.error.title}</h4>
                   <p className={clsx('text-sm mb-6', isDark ? 'text-slate-400' : 'text-slate-500')}>{MESSAGES.error.body}</p>
-                  <button onClick={handleReset} className="text-sm font-semibold text-cyan-400 hover:text-cyan-300 transition-colors">← Try again</button>
+                  <button onClick={handleReset} className="text-sm font-semibold text-yellow-500 hover:text-cyan-300 transition-colors">← Try again</button>
                 </motion.div>
               )}
 
@@ -340,9 +340,9 @@ export default function Contact({ isDark }) {
                             <button key={opt} type="button" onClick={() => handleQuickOption(opt)}
                               className={clsx('px-3 py-1 rounded-full text-xs font-medium border transition-all duration-150',
                                 form.subject === opt
-                                  ? 'bg-gradient-to-r from-cyan-400 to-violet-400 border-transparent text-white'
+                                  ? 'bg-gradient-to-r from-yellow-600 to-yellow-400 border-transparent text-white'
                                   : isDark
-                                    ? 'bg-white/[0.04] border-white/[0.1] text-slate-400 hover:border-cyan-400/30 hover:text-slate-200'
+                                    ? 'bg-white/[0.04] border-white/[0.1] text-slate-400 hover:border-yellow-500/30 hover:text-slate-200'
                                     : 'bg-white border-black/[0.1] text-slate-500 hover:border-cyan-300 hover:text-slate-700'
                               )}
                             >{opt}</button>
@@ -373,8 +373,8 @@ export default function Contact({ isDark }) {
                   {/* SUBMIT */}
                   <button onClick={handleSubmit} disabled={status === 'loading'}
                     className={clsx('w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold text-sm text-white',
-                      'bg-gradient-to-r from-cyan-400 to-violet-400 transition-all duration-200',
-                      status !== 'loading' && 'hover:-translate-y-0.5 hover:shadow-xl hover:shadow-cyan-400/25',
+                      'bg-gradient-to-r from-yellow-600 to-yellow-400 transition-all duration-200',
+                      status !== 'loading' && 'hover:-translate-y-0.5 hover:shadow-xl hover:shadow-yellow-500/25',
                       'disabled:opacity-60 disabled:cursor-not-allowed'
                     )}
                   >

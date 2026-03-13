@@ -56,10 +56,10 @@ export default function Resume({ isDark }) {
                   'flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm border transition-all duration-200 hover:-translate-y-0.5',
                   pdfOpen
                     ? isDark
-                      ? 'bg-cyan-400/15 border-cyan-400/40 text-cyan-400'
+                      ? 'bg-yellow-500/15 border-yellow-500/40 text-yellow-500'
                       : 'bg-cyan-50 border-cyan-300 text-cyan-700'
                     : isDark
-                      ? 'bg-white/[0.04] border-white/[0.08] text-slate-300 hover:bg-white/[0.08] hover:border-cyan-400/30'
+                      ? 'bg-white/[0.04] border-white/[0.08] text-slate-300 hover:bg-white/[0.08] hover:border-yellow-500/30'
                       : 'bg-black/[0.04] border-black/[0.07] text-slate-600 hover:bg-black/[0.07]'
                 )}
               >
@@ -70,7 +70,7 @@ export default function Resume({ isDark }) {
               <a
                 href={personal.resumeUrl}
                 download
-                className="btn-shimmer flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-cyan-400 to-violet-400 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-cyan-400/25 transition-all duration-200"
+                className="btn-shimmer flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-yellow-600 to-yellow-400 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-yellow-500/25 transition-all duration-200"
               >
                 <Download size={15} />
                 Download
@@ -83,7 +83,7 @@ export default function Resume({ isDark }) {
                 className={clsx(
                   'flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-medium text-sm border transition-all duration-200 hover:-translate-y-0.5',
                   isDark
-                    ? 'bg-white/[0.04] border-white/[0.08] text-slate-300 hover:bg-white/[0.08] hover:border-cyan-400/30'
+                    ? 'bg-white/[0.04] border-white/[0.08] text-slate-300 hover:bg-white/[0.08] hover:border-yellow-500/30'
                     : 'bg-black/[0.04] border-black/[0.07] text-slate-600 hover:bg-black/[0.07]'
                 )}
               >
@@ -96,7 +96,7 @@ export default function Resume({ isDark }) {
                 className={clsx(
                   'flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-medium text-sm border transition-all duration-200 hover:-translate-y-0.5',
                   isDark
-                    ? 'bg-white/[0.04] border-white/[0.08] text-slate-300 hover:bg-white/[0.08] hover:border-cyan-400/30'
+                    ? 'bg-white/[0.04] border-white/[0.08] text-slate-300 hover:bg-white/[0.08] hover:border-yellow-500/30'
                     : 'bg-black/[0.04] border-black/[0.07] text-slate-600 hover:bg-black/[0.07]'
                 )}
               >
@@ -143,7 +143,7 @@ export default function Resume({ isDark }) {
                   <a
                     href={personal.resumeUrl}
                     download
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-cyan-400 to-violet-400 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-cyan-400/25 transition-all duration-200"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-yellow-600 to-yellow-400 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-yellow-500/25 transition-all duration-200"
                   >
                     <Download size={14} />
                     Download a copy

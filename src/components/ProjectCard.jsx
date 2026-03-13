@@ -47,7 +47,7 @@ export default function ProjectCard({ project, isDark, onPreview }) {
           'rounded-2xl border overflow-hidden flex flex-col relative cursor-pointer group',
           'transition-colors duration-300',
           isDark
-            ? 'bg-white/[0.04] border-white/[0.08] hover:border-cyan-400/30'
+            ? 'bg-white/[0.04] border-white/[0.08] hover:border-yellow-500/30'
             : 'bg-white border-black/[0.07] shadow-sm hover:border-cyan-300/60'
         )}
       >
@@ -66,9 +66,9 @@ export default function ProjectCard({ project, isDark, onPreview }) {
         {/* Thumbnail */}
         <div className={clsx(
           'h-44 flex items-center justify-center text-6xl relative overflow-hidden border-b transition-all duration-300',
-          isDark ? 'bg-navy-800/60 border-white/[0.06]' : 'bg-slate-50 border-black/[0.05]'
+          isDark ? 'bg-black/60 border-white/[0.06]' : 'bg-slate-50 border-black/[0.05]'
         )}>
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/0 to-violet-400/0 group-hover:from-cyan-400/[0.08] group-hover:to-violet-400/[0.08] transition-all duration-300" />
+          <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/0 to-yellow-400/0 group-hover:from-yellow-500/[0.08] group-hover:to-yellow-400/[0.08] transition-all duration-300" />
           <span className="relative z-10" style={{ display: 'block', transform: 'translateZ(30px)' }}>
             {project.emoji}
           </span>
@@ -76,8 +76,8 @@ export default function ProjectCard({ project, isDark, onPreview }) {
             <span className={clsx(
               'absolute top-3 right-3 px-2.5 py-1 rounded-full font-mono text-[0.65rem] font-semibold',
               isDark
-                ? 'bg-cyan-400/15 border border-cyan-400/30 text-cyan-400'
-                : 'bg-cyan-50 border border-cyan-200 text-cyan-600'
+                ? 'bg-yellow-500/15 border border-yellow-500/30 text-yellow-500'
+                : 'bg-yellow-50 border border-yellow-300 text-yellow-700'
             )}>
               ★ Featured
             </span>
@@ -103,7 +103,7 @@ export default function ProjectCard({ project, isDark, onPreview }) {
             if (window.innerWidth < 768) setExpanded(o => !o)
           }}
         >
-          <div className="font-mono text-[0.68rem] uppercase tracking-[0.1em] text-cyan-400 mb-2">
+          <div className="font-mono text-[0.68rem] uppercase tracking-[0.1em] text-yellow-500 mb-2">
             {project.category.join(' · ')}
           </div>
 
@@ -156,7 +156,7 @@ export default function ProjectCard({ project, isDark, onPreview }) {
                     'flex-1 flex items-center justify-center gap-1.5',
                     'py-2.5 rounded-xl text-xs font-semibold border transition-all duration-200',
                     isDark
-                      ? 'bg-white/[0.04] border-white/[0.08] text-slate-300 hover:bg-white/[0.08] hover:border-cyan-400/25'
+                      ? 'bg-white/[0.04] border-white/[0.08] text-slate-300 hover:bg-white/[0.08] hover:border-yellow-500/25'
                       : 'bg-black/[0.04] border-black/[0.07] text-slate-600 hover:bg-black/[0.07]'
                   )}
                 >
@@ -172,7 +172,7 @@ export default function ProjectCard({ project, isDark, onPreview }) {
                     'flex-1 flex items-center justify-center gap-1.5',
                     'py-2.5 rounded-xl text-xs font-semibold border transition-all duration-200',
                     isDark
-                      ? 'bg-white/[0.04] border-white/[0.08] text-slate-300 hover:bg-white/[0.08] hover:border-cyan-400/25'
+                      ? 'bg-white/[0.04] border-white/[0.08] text-slate-300 hover:bg-white/[0.08] hover:border-yellow-500/25'
                       : 'bg-black/[0.04] border-black/[0.07] text-slate-600 hover:bg-black/[0.07]'
                   )}
                 >
@@ -186,8 +186,8 @@ export default function ProjectCard({ project, isDark, onPreview }) {
                   onClick={e => e.stopPropagation()}
                   className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl
                              text-xs font-semibold text-white
-                             bg-gradient-to-r from-cyan-400 to-violet-400
-                             hover:shadow-lg hover:shadow-cyan-400/20 hover:-translate-y-0.5
+                             bg-gradient-to-r from-yellow-600 to-yellow-400
+                             hover:shadow-lg hover:shadow-yellow-500/20 hover:-translate-y-0.5
                              transition-all duration-200"
                 >
                   <ExternalLink size={12} /> Demo

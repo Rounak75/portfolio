@@ -28,8 +28,8 @@ export default function Footer({ isDark }) {
     <footer className={clsx(
       'border-t py-10',
       isDark
-        ? 'bg-navy-800/40 border-white/[0.06]'
-        : 'bg-slate-100/80 border-black/[0.06]'
+        ? 'bg-neutral-900/40 border-white/[0.06]'
+        : 'bg-gray-50/80 border-black/[0.06]'
     )}>
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
@@ -70,7 +70,7 @@ export default function Footer({ isDark }) {
                   'w-8 h-8 rounded-lg flex items-center justify-center',
                   'border transition-all duration-200 hover:-translate-y-0.5',
                   isDark
-                    ? 'bg-white/[0.04] border-white/[0.07] text-slate-500 hover:text-cyan-400 hover:border-cyan-400/30'
+                    ? 'bg-white/[0.04] border-white/[0.07] text-slate-500 hover:text-yellow-500 hover:border-yellow-500/30'
                     : 'bg-white border-black/[0.07] text-slate-400 hover:text-cyan-500 hover:border-cyan-300'
                 )}
               >
