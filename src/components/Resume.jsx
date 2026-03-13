@@ -1,32 +1,17 @@
-// ═══════════════════════════════════════════════════════
-// src/components/Resume.jsx
-//
-// RESUME SECTION
-//
-// A centered card with a download button.
-//
-// ✏️ HOW TO LINK YOUR RESUME PDF:
-//   1. Place your PDF file in the /public folder
-//      → /public/resume.pdf
-//   2. The resumeUrl in personal.js already points to '/resume.pdf'
-//   3. That's it! The download button will work automatically.
-// ═══════════════════════════════════════════════════════
-
-import { motion } from 'framer-motion'
-import { Download, Mail } from 'lucide-react'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Download, Mail, Eye, EyeOff, ExternalLink, ChevronDown } from 'lucide-react'
 import { personal } from '../data/personal.js'
 import { SectionLabel, SectionTitle } from './ui/SectionHeader.jsx'
 import clsx from 'clsx'
 
 export default function Resume({ isDark }) {
+  const [pdfOpen, setPdfOpen] = useState(false)
+
   return (
-    <section
-      id="resume"
-      className="py-28"
-    >
+    <section id="resume" className="py-28">
       <div className="max-w-6xl mx-auto px-6">
 
-        {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -37,75 +22,138 @@ export default function Resume({ isDark }) {
           <SectionTitle>Resume</SectionTitle>
         </motion.div>
 
-        {/* Resume card */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.55, delay: 0.1 }}
-          whileHover={{ boxShadow: isDark
-            ? '0 24px 60px rgba(99,179,237,0.12)'
-            : '0 24px 50px rgba(99,179,237,0.1)'
-          }}
           className={clsx(
-            'max-w-xl mx-auto mt-14 p-12 rounded-3xl border text-center',
-            'transition-all duration-300',
+            'max-w-2xl mx-auto mt-14 rounded-3xl border overflow-hidden transition-all duration-300',
             isDark
-              ? 'bg-white/[0.04] border-white/[0.08] hover:border-cyan-400/25'
-              : 'bg-white border-black/[0.07] shadow-md hover:border-cyan-300/50'
+              ? 'bg-white/[0.04] border-white/[0.08]'
+              : 'bg-white border-black/[0.07] shadow-md'
           )}
         >
-          {/* Doc emoji */}
-          <div className="text-5xl mb-5">📄</div>
+          {/* Top info */}
+          <div className="p-10 text-center">
+            <div className="text-5xl mb-5">📄</div>
 
-          {/* Name */}
-          <h3 className="font-display font-extrabold text-xl mb-3">
-            {personal.name}
-          </h3>
+            <h3 className="font-display font-extrabold text-xl mb-3">
+              {personal.name}
+            </h3>
 
-          {/* Subtitle */}
-          <p className={clsx(
-            'text-sm mb-8 leading-relaxed',
-            isDark ? 'text-slate-400' : 'text-slate-500'
-          )}>
-            B.Tech CSE · SOA ITER · Batch of 2028<br />
-            AI Developer · Full Stack · Competitive Programmer
-          </p>
+            <p className={clsx('text-sm mb-8 leading-relaxed', isDark ? 'text-slate-400' : 'text-slate-500')}>
+              B.Tech CSE · SOA ITER · Batch of 2028<br />
+              AI Developer · Full Stack · Competitive Programmer
+            </p>
 
-          {/* Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            {/* Download — uses HTML download attribute */}
-            <a
-              href={personal.resumeUrl}
-              download
-              className="btn-shimmer flex items-center justify-center gap-2
-                         px-8 py-3.5 rounded-xl font-semibold text-sm text-white
-                         bg-gradient-to-r from-cyan-400 to-violet-400
-                         hover:-translate-y-0.5 hover:shadow-xl hover:shadow-cyan-400/25
-                         transition-all duration-200"
-            >
-              <Download size={15} />
-              Download Resume
-            </a>
+            {/* Buttons */}
+            <div className="flex flex-wrap gap-3 justify-center">
 
-            {/* Email shortcut */}
-            <a
-              href={personal.socials.email}
-              className={clsx(
-                'flex items-center justify-center gap-2',
-                'px-8 py-3.5 rounded-xl font-medium text-sm border transition-all duration-200',
-                'hover:-translate-y-0.5',
-                isDark
-                  ? 'bg-white/[0.04] border-white/[0.08] text-slate-300 hover:bg-white/[0.08] hover:border-cyan-400/30'
-                  : 'bg-black/[0.04] border-black/[0.07] text-slate-600 hover:bg-black/[0.07]'
-              )}
-            >
-              <Mail size={15} />
-              Get in Touch
-            </a>
+              <button
+                onClick={() => setPdfOpen(o => !o)}
+                className={clsx(
+                  'flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm border transition-all duration-200 hover:-translate-y-0.5',
+                  pdfOpen
+                    ? isDark
+                      ? 'bg-cyan-400/15 border-cyan-400/40 text-cyan-400'
+                      : 'bg-cyan-50 border-cyan-300 text-cyan-700'
+                    : isDark
+                      ? 'bg-white/[0.04] border-white/[0.08] text-slate-300 hover:bg-white/[0.08] hover:border-cyan-400/30'
+                      : 'bg-black/[0.04] border-black/[0.07] text-slate-600 hover:bg-black/[0.07]'
+                )}
+              >
+                {pdfOpen ? <EyeOff size={15} /> : <Eye size={15} />}
+                {pdfOpen ? 'Hide Preview' : 'Preview Resume'}
+              </button>
+
+              <a
+                href={personal.resumeUrl}
+                download
+                className="btn-shimmer flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-cyan-400 to-violet-400 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-cyan-400/25 transition-all duration-200"
+              >
+                <Download size={15} />
+                Download
+              </a>
+
+              <a
+                href={personal.resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={clsx(
+                  'flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-medium text-sm border transition-all duration-200 hover:-translate-y-0.5',
+                  isDark
+                    ? 'bg-white/[0.04] border-white/[0.08] text-slate-300 hover:bg-white/[0.08] hover:border-cyan-400/30'
+                    : 'bg-black/[0.04] border-black/[0.07] text-slate-600 hover:bg-black/[0.07]'
+                )}
+              >
+                <ExternalLink size={15} />
+                Open in Tab
+              </a>
+
+              <a
+                href={personal.socials.email}
+                className={clsx(
+                  'flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-medium text-sm border transition-all duration-200 hover:-translate-y-0.5',
+                  isDark
+                    ? 'bg-white/[0.04] border-white/[0.08] text-slate-300 hover:bg-white/[0.08] hover:border-cyan-400/30'
+                    : 'bg-black/[0.04] border-black/[0.07] text-slate-600 hover:bg-black/[0.07]'
+                )}
+              >
+                <Mail size={15} />
+                Get in Touch
+              </a>
+            </div>
+
+            {!pdfOpen && (
+              <motion.div
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                className={clsx('flex items-center justify-center gap-1.5 mt-5 text-xs font-mono',
+                  isDark ? 'text-slate-600' : 'text-slate-400')}
+              >
+                <ChevronDown size={12} />
+                click preview to read inline
+              </motion.div>
+            )}
           </div>
-        </motion.div>
 
+          {/* PDF viewer */}
+          <AnimatePresence>
+            {pdfOpen && (
+              <motion.div
+                key="pdf"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 780, opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                className="overflow-hidden"
+              >
+                <div className={clsx('h-px mx-8', isDark ? 'bg-white/[0.07]' : 'bg-black/[0.07]')} />
+
+                <div className="p-4">
+                  <iframe
+                    src={`${personal.resumeUrl}#toolbar=0&navpanes=0&scrollbar=1`}
+                    className="w-full rounded-2xl"
+                    style={{ height: 720, border: 'none' }}
+                    title="Resume Preview"
+                  />
+                </div>
+
+                <div className="px-10 pb-8 text-center">
+                  <a
+                    href={personal.resumeUrl}
+                    download
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-cyan-400 to-violet-400 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-cyan-400/25 transition-all duration-200"
+                  >
+                    <Download size={14} />
+                    Download a copy
+                  </a>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+        </motion.div>
       </div>
     </section>
   )
