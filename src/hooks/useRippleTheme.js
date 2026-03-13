@@ -7,12 +7,16 @@ export function useRippleTheme(initialDark = true) {
   })
 
   const triggerRipple = useCallback(() => {
-    setIsDark(d => {
-      const next = !d
-      document.documentElement.classList.toggle('dark',  next)
-      document.documentElement.classList.toggle('light', !next)
-      localStorage.setItem('theme', next ? 'dark' : 'light')
-      return next
+    // 1. Flip the class on <html> immediately — CSS transitions start right away
+    const next = !document.documentElement.classList.contains('dark')
+    document.documentElement.classList.toggle('dark',  next)
+    document.documentElement.classList.toggle('light', !next)
+    localStorage.setItem('theme', next ? 'dark' : 'light')
+
+    // 2. Schedule the React state update in the next frame so it doesn't
+    //    compete with the CSS transition paint on the same frame
+    requestAnimationFrame(() => {
+      setIsDark(next)
     })
   }, [])
 

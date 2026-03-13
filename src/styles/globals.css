@@ -17,14 +17,21 @@
    The 350ms duration feels instant but not jarring.
    background-color, color, border-color cover 99% of cases.
    ──────────────────────────────────────────────────────── */
-*,
-*::before,
-*::after {
+/* Theme transition — scoped to specific elements, not * */
+/* Applying to * forces GPU work on every DOM node at once */
+body,
+nav, header, footer, section, main, aside,
+.glass-card,
+a, button,
+input, textarea,
+[class*="bg-"],
+[class*="border-"],
+[class*="text-"] {
   transition:
-    background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-    color            0.35s cubic-bezier(0.4, 0, 0.2, 1),
-    border-color     0.25s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow       0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color 0.2s ease,
+    color            0.2s ease,
+    border-color     0.15s ease,
+    box-shadow       0.15s ease;
 }
 
 /* ─────────────────────────────────────────────
@@ -145,6 +152,14 @@ body {
   .orb-3      { width: 180px; height: 180px; }
 }
 
+/* Slightly lighter card surfaces on mobile in dark mode
+   so elements don't all merge into one flat black mass */
+@media (max-width: 768px) {
+  .dark .glass-card,
+  .dark [class*="bg-white/[0.04]"] {
+    background: rgba(255, 255, 255, 0.06);
+  }
+}
 
 @keyframes drift {
   0%   { transform: translate(0, 0) scale(1); }

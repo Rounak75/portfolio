@@ -19,30 +19,23 @@ export const personal = {
   bio: "I build intelligent systems and beautiful interfaces — combining the power of Machine Learning with modern web technology to create impactful, real-world solutions.",
 
   // ── About Section (longer version) ─────────────────
-  aboutLong: `I am a software developer and CSE undergrad at SOA ITER (Batch of 2028) 
-passionate about Artificial Intelligence, Machine Learning, and building impactful technology. 
-I enjoy solving real-world problems through code and continuously learning new technologies.`,
+  aboutLong: `I am a software developer and CSE undergrad at SOA ITER (Batch of 2028) \npassionate about Artificial Intelligence, Machine Learning, and building impactful technology. \nI enjoy solving real-world problems through code and continuously learning new technologies.`,
 
-  aboutExtra: `I've worked on projects spanning computer vision, cybersecurity dashboards, and 
-full-stack applications. Beyond code, I'm a competitive programmer, photographer, and co-founder at Ayuda.`,
+  aboutExtra: `I've worked on projects spanning computer vision, cybersecurity dashboards, and \nfull-stack applications. Beyond code, I'm a competitive programmer, photographer, and co-founder at Ayuda.`,
 
   // ── Social Links ─────────────────────────────────────
-  // ✏️ Replace '#' with your actual URLs
   socials: {
     github:   "https://github.com/Rounak75",
     linkedin: "https://linkedin.com/in/rounakmahato",
-    twitter:  "https://twitter.com",          // ✏️ Add your Twitter/X handle
+    twitter:  "https://twitter.com",
     email:    "mailto:rounakmahato039@gmail.com",
   },
 
   // ── Resume ───────────────────────────────────────────
-  // ✏️ Place your PDF in /public/resume.pdf, then this link works
   resumeUrl: "/resume.pdf",
 };
 
 // ── Skills ───────────────────────────────────────────────
-// ✏️ Add/remove skills, change percentages
-// percentage = how full the animated bar fills (0–100)
 export const skills = [
   { name: "Python",           emoji: "🐍",  pct: 90, color: "from-cyan-400 to-violet-400" },
   { name: "Machine Learning", emoji: "🤖",  pct: 80, color: "from-violet-400 to-emerald-400" },
@@ -55,15 +48,16 @@ export const skills = [
   { name: "HTML / CSS",       emoji: "🎨",  pct: 88, color: "from-cyan-400 to-violet-400" },
 ];
 
-// ── Tech Chips (shown below skill bars) ─────────────────
+// ── Tech Chips ───────────────────────────────────────────
 export const techStack = [
   "🐍 Python", "⚛️ React", "🔧 Django", "🟢 Node.js",
   "🧠 TensorFlow", "📊 Scikit-learn", "🐙 Git",
   "🗄️ PostgreSQL", "🍃 MongoDB", "🐹 Go", "☁️ Cloud",
 ];
 
-// ── Experience Timeline ──────────────────────────────────
-export const experience = [
+// ── Education Timeline ────────────────────────────────────
+// ✏️ Add/remove education entries here
+export const education = [
   {
     dot:   "🎓",
     year:  "2024 – 2028",
@@ -83,6 +77,11 @@ export const experience = [
     title: "Class X — Tagore Academy",
     sub:   "ICSE · Jamshedpur, Jharkhand",
   },
+];
+
+// ── Experience Timeline ───────────────────────────────────
+// ✏️ Add/remove experience entries here
+export const experience = [
   {
     dot:   "E",
     year:  "Jan 2025 – Present",
@@ -93,7 +92,7 @@ export const experience = [
     dot:   "G",
     year:  "Nov 2025 – Present",
     title: "PR & Event Management — GDG on Campus ITER",
-    sub:   "Planned and executed GDG workshops and events with 400+ registrations, driving active participation in the tech community.workshop",
+    sub:   "Planned and executed GDG workshops and events with 400+ registrations, driving active participation in the tech community.",
   },
   {
     dot:   "I",

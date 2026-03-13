@@ -11,7 +11,14 @@
 // ═══════════════════════════════════════════════════════
 
 import { motion } from 'framer-motion'
-import { Github, Linkedin, Twitter, Mail, Download, ArrowRight } from 'lucide-react'
+import { Github, Linkedin, Mail, Download, ArrowRight } from 'lucide-react'
+
+// X (formerly Twitter) logo — not in lucide-react v0.383
+const XLogo = ({ size = 16 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.74l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+)
 import { personal } from '../data/personal.js'
 import { useTypewriter } from '../hooks/useTypewriter.js'
 import clsx from 'clsx'
@@ -49,7 +56,7 @@ const SOCIALS = [
   { icon: Github,   label: 'GitHub',   href: personal.socials.github   },
   { icon: Linkedin, label: 'LinkedIn', href: personal.socials.linkedin  },
   { icon: Mail,     label: 'Email',    href: personal.socials.email     },
-  { icon: Twitter,  label: 'Twitter',  href: personal.socials.twitter   },
+  { icon: XLogo,    label: 'X',        href: personal.socials.twitter   },
 ]
 
 // Avatar floating chips — appear around the avatar card
@@ -94,7 +101,7 @@ export default function Hero({ isDark }) {
                   : 'bg-cyan-50 border-cyan-300 text-cyan-600'
               )}>
                 {/* Pulsing green dot = "online / available" */}
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse2" />
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse2 shadow-[0_0_6px_rgba(34,197,94,0.8)]" />
                 Open to opportunities &amp; collaborations
               </span>
             </motion.div>

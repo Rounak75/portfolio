@@ -228,7 +228,7 @@ export default function Contact({ isDark }) {
   )
 
   return (
-    <section id="contact" className={clsx('py-16 md:py-28', isDark ? 'bg-neutral-900/40' : 'bg-amber-50/40')}>
+    <section id="contact" className={clsx('py-16 md:py-28', isDark ? 'bg-white/[0.02]' : 'bg-amber-50/40')}>
       <div className="max-w-6xl mx-auto px-6">
 
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
@@ -262,7 +262,7 @@ export default function Contact({ isDark }) {
             <div className={clsx('mt-6 flex items-center gap-2.5 px-4 py-3 rounded-xl border text-sm',
               isDark ? 'bg-emerald-400/[0.06] border-emerald-400/20 text-emerald-400' : 'bg-emerald-50 border-emerald-200 text-emerald-700'
             )}>
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse2 flex-shrink-0" />
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse2 flex-shrink-0 shadow-[0_0_6px_rgba(34,197,94,0.8)]" />
               Usually responds within 24 hours
             </div>
           </motion.div>
