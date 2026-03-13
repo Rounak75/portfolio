@@ -70,7 +70,7 @@ export default function LoadingScreen({ onComplete }) {
         transition: { duration: 0.7, ease: [0.4, 0, 0.2, 1] },
       }}
       className="fixed inset-0 z-[999] flex items-center justify-center overflow-hidden"
-      style={{ background: '#080b14' }}
+      style={{ background: '#000000' }}
     >
       {/* ── Background orbs ───────────────────────────── */}
       <div className="absolute inset-0 pointer-events-none">
@@ -84,7 +84,7 @@ export default function LoadingScreen({ onComplete }) {
         className="absolute rounded-full pointer-events-none"
         style={{
           width: 220, height: 220,
-          background: 'radial-gradient(circle, rgba(99,179,237,0.08) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%)',
         }}
         animate={{ scale: [1, 1.18, 1], opacity: [0.5, 1, 0.5] }}
         transition={{ duration: 2.8, ease: 'easeInOut', repeat: Infinity }}
@@ -106,9 +106,9 @@ export default function LoadingScreen({ onComplete }) {
               width: 96, height: 96,
               borderRadius: 24,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: 'linear-gradient(135deg, rgba(99,179,237,0.12), rgba(167,139,250,0.12))',
-              border: '1px solid rgba(99,179,237,0.28)',
-              boxShadow: '0 0 40px rgba(99,179,237,0.18), 0 0 80px rgba(167,139,250,0.1)',
+              background: 'linear-gradient(135deg, rgba(135, 135, 135, 0.12), rgba(55, 55, 51, 0.12))',
+              border: '1px solid rgba(255, 255, 255, 0.28)',
+              boxShadow: '0 0 40px rgba(218, 205, 33, 0.18), 0 0 80px rgba(167,139,250,0.1)',
               position: 'relative', overflow: 'hidden',
             }}
           >
@@ -126,7 +126,7 @@ export default function LoadingScreen({ onComplete }) {
             {/* Initials text */}
             <span style={{
               fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: '2.2rem',
-              background: 'linear-gradient(135deg, #63b3ed, #a78bfa)',
+              background: 'linear-gradient(135deg, #d4a843, #f0c060)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
               position: 'relative', zIndex: 1,
             }}>
@@ -138,7 +138,7 @@ export default function LoadingScreen({ onComplete }) {
           <motion.div
             style={{
               position: 'absolute', inset: -4, borderRadius: 28,
-              border: '1px solid rgba(99,179,237,0.2)', pointerEvents: 'none',
+              border: '1px solid rgba(250, 250, 250, 0.99)', pointerEvents: 'none',
             }}
             animate={{ opacity: [0.3, 0.8, 0.3], scale: [0.98, 1.02, 0.98] }}
             transition={{ duration: 2, ease: 'easeInOut', repeat: Infinity }}
@@ -163,7 +163,7 @@ export default function LoadingScreen({ onComplete }) {
           style={{
             fontFamily: 'JetBrains Mono, monospace', fontSize: '0.68rem',
             letterSpacing: '0.18em', textTransform: 'uppercase',
-            color: '#63b3ed', marginBottom: 36,
+            color: '#d4a843', marginBottom: 36,
           }}
         >
           AI Developer · Portfolio
@@ -179,8 +179,8 @@ export default function LoadingScreen({ onComplete }) {
               animate={barControls}
               style={{
                 height: '100%', borderRadius: 9999,
-                background: 'linear-gradient(90deg, #63b3ed, #a78bfa, #34d399)',
-                boxShadow: '0 0 12px rgba(99,179,237,0.6)',
+                background: 'linear-gradient(90deg, #d4a843, #f0c060, #ffffff)',
+                boxShadow: '0 0 12px rgba(255, 255, 255, 0.6)',
                 transformOrigin: 'left center',
               }}
             />
@@ -197,7 +197,7 @@ export default function LoadingScreen({ onComplete }) {
               key={i}
               style={{
                 width: 4, height: 4, borderRadius: '50%',
-                background: 'rgba(99,179,237,0.5)',
+                background: 'rgb(255, 255, 255)',
                 display: 'block',
               }}
               animate={{ opacity: [0.2, 1, 0.2], scale: [0.8, 1.2, 0.8] }}

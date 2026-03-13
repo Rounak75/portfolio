@@ -6,7 +6,7 @@
 //
 // ✏️ CUSTOMISE:
 //   height  — change h-[3px] to h-[2px] or h-[4px]
-//   colors  — change the from-cyan-400 to-violet-400 gradient
+//   colors  — change the from-yellow-600 to-yellow-400 gradient
 // ═══════════════════════════════════════════════════════
 
 import { useEffect, useState } from 'react'
@@ -43,7 +43,7 @@ export default function ScrollProgressBar() {
       style={{
         scaleX,
         // ✏️ Change gradient colors here
-        background: 'linear-gradient(90deg, #63b3ed, #a78bfa, #34d399)',
+        background: 'linear-gradient(90deg, #d4a843, #a78bfa, #34d399)',
         // Subtle glow under the bar
         boxShadow: '0 0 10px rgba(99,179,237,0.6)',
       }}
