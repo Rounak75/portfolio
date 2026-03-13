@@ -111,6 +111,16 @@ body {
   opacity: 0.12;
   animation: drift 18s ease-in-out infinite alternate;
 }
+
+@media (max-width: 768px) {
+  .orb {
+    opacity: 0.06;
+    filter: blur(60px);
+  }
+  .orb-1 { width: 280px; height: 280px; }
+  .orb-2 { width: 220px; height: 220px; }
+  .orb-3 { width: 180px; height: 180px; }
+}
 .orb-1 {
   width: 600px; height: 600px;
   background: radial-gradient(circle, #d4a843, transparent);
