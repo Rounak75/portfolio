@@ -84,22 +84,26 @@ export default function Navbar({ isDark, triggerRipple }) {
                 className={clsx(
                   'relative px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 z-10',
                   active === link.id
-                    ? 'text-white'
-                    : isDark ? 'text-slate-400 hover:text-slate-200' : 'text-slate-500 hover:text-slate-900'
-                )}
-              >
-                {active === link.id && (
-                  <motion.span
-                    layoutId="active-pill"
-                    className="absolute inset-0 rounded-lg -z-10"
-                    style={{
-                      background: 'linear-gradient(135deg, rgba(212,168,67,0.25), rgba(240,192,96,0.25))',
-                      border: '1px solid rgba(212,168,67,0.25)',
-                      boxShadow: '0 0 12px rgba(212,168,67,0.2)',
-                    }}
-                    transition={{ type: 'spring', stiffness: 380, damping: 32 }}
-                  />
-                )}
+  ? isDark ? 'text-white' : 'text-stone-900 font-semibold'
+  : isDark ? 'text-slate-400 hover:text-slate-200' : 'text-slate-500 hover:text-slate-900'
+)}
+>
+  {active === link.id && (
+    <motion.span
+      layoutId="active-pill"
+      className="absolute inset-0 rounded-lg -z-10"
+      style={isDark ? {
+        background: 'linear-gradient(135deg, rgba(212,168,67,0.25), rgba(240,192,96,0.25))',
+        border: '1px solid rgba(212,168,67,0.25)',
+        boxShadow: '0 0 12px rgba(212,168,67,0.2)',
+        } : {
+              background: 'linear-gradient(135deg, rgba(180,130,20,0.18), rgba(212,168,67,0.22))',
+              border: '1px solid rgba(180,130,20,0.45)',
+              boxShadow: '0 0 10px rgba(180,130,20,0.15)',
+            }}
+              transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+            />
+            )}
                 {link.label}
               </a>
             ))}
