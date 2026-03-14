@@ -520,13 +520,9 @@ html.lenis body {
 }
 /* ─────────────────────────────────────────────
    MODAL SCROLL LOCK
-   overflow:hidden on html is the correct approach.
-   Locking body causes layout collapse (stuck page).
-   Locking html just hides the scrollbar cleanly.
+   Scroll lock is handled entirely in JS (ProjectModal.jsx + Navbar.jsx).
+   No CSS overflow rules needed here — they conflict with Lenis.
    ───────────────────────────────────────────── */
-html.modal-open {
-  overflow: hidden;
-}
 
 /* ─────────────────────────────────────────────
    MOBILE BACKGROUND: pure black
@@ -575,4 +571,29 @@ main, section {
   z-index: 200;
   overscroll-behavior: contain;
   touch-action: none; /* prevent scroll bleed-through on iOS */
+}
+
+/* ─────────────────────────────────────────────
+   MODAL MOBILE FIXES
+   Prevent modal from overflowing viewport width
+   on small screens (the yellow border issue).
+   ───────────────────────────────────────────── */
+@media (max-width: 640px) {
+  /* Ensure backdrop never causes horizontal scroll */
+  [data-modal-backdrop] {
+    padding: 12px;
+    align-items: flex-end; /* sheet-style from bottom on mobile */
+  }
+
+  /* Modal card fills width minus safe padding */
+  [data-modal-backdrop] > * {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    border-top-left-radius: 1.25rem;
+    border-top-right-radius: 1.25rem;
+    max-height: 90dvh !important;
+    max-height: 90vh !important;
+  }
 }

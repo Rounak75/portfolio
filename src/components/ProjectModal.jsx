@@ -59,7 +59,7 @@ export default function ProjectModal({ project, isDark, onClose }) {
         // Backdrop
         <motion.div
           data-modal-backdrop
-          className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6"
+          className="fixed inset-0 z-[200] flex items-center justify-center px-3 py-4 sm:p-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -71,10 +71,10 @@ export default function ProjectModal({ project, isDark, onClose }) {
           <motion.div
             data-lenis-prevent
             className={clsx(
-              'w-full max-w-[640px] max-h-[88vh] overflow-y-auto',
+              // w-full with mx-auto, strict max-h so it scrolls on small phones
+              'w-full max-w-[640px] overflow-y-auto',
               'rounded-2xl border',
-              // overscroll-contain prevents scroll bleeding to page on mobile
-              '[overscroll-behavior:contain]',
+              '[overscroll-behavior:contain] [-webkit-overflow-scrolling:touch]',
               isDark
                 ? 'bg-[#111111] border-yellow-500/25'
                 : 'bg-white border-yellow-200'
@@ -82,13 +82,13 @@ export default function ProjectModal({ project, isDark, onClose }) {
             initial={{ scale: 0.9, y: 30, opacity: 0 }}
             animate={{ scale: 1, y: 0, opacity: 1 }}
             exit={{ scale: 0.92, y: 20, opacity: 0 }}
-            // Spring = bouncy, natural-feeling animation
             transition={{ type: 'spring', stiffness: 320, damping: 28 }}
+            style={{ maxHeight: 'min(88dvh, 88vh)' }}
             onClick={e => e.stopPropagation()}
           >
             {/* Emoji hero area */}
             <div className={clsx(
-              'h-52 flex items-center justify-center text-[6rem]',
+              'h-36 sm:h-52 flex items-center justify-center text-5xl sm:text-[6rem]',
               'rounded-t-2xl',
               isDark
                 ? 'bg-[#0d0d0d]'
@@ -98,7 +98,7 @@ export default function ProjectModal({ project, isDark, onClose }) {
             </div>
 
             {/* Body */}
-            <div className="p-8">
+            <div className="p-5 sm:p-8">
               {/* Title row + close button */}
               <div className="flex items-start justify-between mb-6">
                 <div>
@@ -167,7 +167,7 @@ export default function ProjectModal({ project, isDark, onClose }) {
               </div>
 
               {/* Action buttons */}
-              <div className="flex gap-3">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <a
                   href={project.github}
                   target="_blank"
