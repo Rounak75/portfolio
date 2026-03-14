@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useCallback } from 'react'
 import {
   motion,
   useMotionValue,
@@ -12,13 +12,19 @@ import clsx from 'clsx'
 const MAX_TILT = 12
 const SPRING   = { stiffness: 300, damping: 42, mass: 0.5 }
 
+// Evaluated once — true on real mouse devices, false on touch
 const HAS_FINE_POINTER =
   typeof window !== 'undefined' &&
   window.matchMedia('(pointer: fine)').matches
 
+// True on touch devices — where we use tap-to-tilt
+const IS_TOUCH = !HAS_FINE_POINTER
+
 export default function ProjectCard({ project, isDark, onPreview }) {
   const cardRef = useRef(null)
   const [expanded, setExpanded] = useState(false)
+  // Track whether a tap-tilt is in progress (mobile)
+  const [isTilting, setIsTilting] = useState(false)
 
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
@@ -32,9 +38,10 @@ export default function ProjectCard({ project, isDark, onPreview }) {
   const shineBg = useTransform(
     [shineX, shineY],
     ([x, y]) =>
-      `radial-gradient(circle at ${x} ${y}, rgba(255,255,255,0.09) 0%, transparent 65%)`
+      `radial-gradient(circle at ${x} ${y}, rgba(212,168,67,0.13) 0%, transparent 65%)`
   )
 
+  // Desktop: track mouse position for smooth tilt
   const handleMouseMove = e => {
     const rect = cardRef.current?.getBoundingClientRect()
     if (!rect) return
@@ -43,21 +50,43 @@ export default function ProjectCard({ project, isDark, onPreview }) {
   }
   const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0) }
 
+  // Mobile: tap triggers a quick tilt-and-reset pulse
+  // Gives the 3D feedback feel without needing continuous touch tracking
+  const handleTap = useCallback(() => {
+    if (!IS_TOUCH) return
+    setIsTilting(true)
+    // Tilt diagonally
+    mouseX.set(0.5)
+    mouseY.set(-0.4)
+    // Spring back after 350ms
+    setTimeout(() => {
+      mouseX.set(0)
+      mouseY.set(0)
+      setIsTilting(false)
+    }, 350)
+  }, [mouseX, mouseY])
+
+  // Mobile expand/collapse toggle
   const toggleExpanded = () => {
-    if (!HAS_FINE_POINTER) setExpanded(o => !o)
+    if (IS_TOUCH) {
+      handleTap()         // tilt effect on every tap
+      setExpanded(o => !o)
+    }
   }
 
   return (
-    <div style={{ perspective: HAS_FINE_POINTER ? 900 : 'none' }}>
+    // perspective always on — enables 3D on both desktop and mobile
+    <div style={{ perspective: 900 }}>
       <motion.div
         ref={cardRef}
-        onMouseMove={HAS_FINE_POINTER  ? handleMouseMove  : undefined}
+        // Desktop: continuous mouse tracking
+        onMouseMove={HAS_FINE_POINTER ? handleMouseMove  : undefined}
         onMouseLeave={HAS_FINE_POINTER ? handleMouseLeave : undefined}
-        style={HAS_FINE_POINTER
-          ? { rotateX, rotateY, transformStyle: 'preserve-3d', willChange: 'transform' }
-          : {}
-        }
+        // 3D tilt always active — works on both desktop (mouse) and mobile (tap pulse)
+        style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+        // Desktop lift on hover; mobile gets a subtle scale on tap via whileTap
         whileHover={HAS_FINE_POINTER ? { scale: 1.02, z: 20 } : undefined}
+        whileTap={IS_TOUCH ? { scale: 0.98 } : undefined}
         transition={{ duration: 0.25 }}
         className={clsx(
           'rounded-2xl border overflow-hidden flex flex-col relative cursor-pointer group',
@@ -67,13 +96,17 @@ export default function ProjectCard({ project, isDark, onPreview }) {
             : 'bg-white border-black/[0.07] shadow-sm hover:border-yellow-500/50'
         )}
       >
-        {/* Shine overlay — desktop only */}
-        {HAS_FINE_POINTER && (
-          <motion.div
-            className="absolute inset-0 pointer-events-none z-20 rounded-2xl"
-            style={{ background: shineBg, translateZ: 1 }}
-          />
-        )}
+        {/* Shine overlay — visible on desktop hover AND mobile tap-tilt */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none z-20 rounded-2xl"
+          style={{
+            background: shineBg,
+            translateZ: 1,
+            // On mobile show shine only during tilt pulse
+            opacity: IS_TOUCH ? (isTilting ? 1 : 0) : 1,
+            transition: IS_TOUCH ? 'opacity 0.3s ease' : undefined,
+          }}
+        />
 
         {/* Thumbnail — tapping this toggles expand on mobile */}
         <div
@@ -87,7 +120,7 @@ export default function ProjectCard({ project, isDark, onPreview }) {
 
           <span
             className="relative z-10"
-            style={{ display: 'block', transform: HAS_FINE_POINTER ? 'translateZ(30px)' : 'none' }}
+            style={{ display: 'block', transform: 'translateZ(30px)' }}
           >
             {project.emoji}
           </span>
@@ -104,7 +137,7 @@ export default function ProjectCard({ project, isDark, onPreview }) {
           )}
 
           {/* Mobile expand hint */}
-          {!HAS_FINE_POINTER && (
+          {IS_TOUCH && (
             <div className={clsx(
               'absolute bottom-2 left-1/2 -translate-x-1/2',
               'px-2.5 py-1 rounded-full text-[0.6rem] font-mono flex items-center gap-1',
@@ -119,7 +152,7 @@ export default function ProjectCard({ project, isDark, onPreview }) {
         {/* Body */}
         <div
           className="p-6 flex flex-col flex-1"
-          style={{ transform: HAS_FINE_POINTER ? 'translateZ(10px)' : 'none' }}
+          style={{ transform: 'translateZ(10px)' }}
           onClick={toggleExpanded}
         >
           <div className="font-mono text-[0.68rem] uppercase tracking-[0.1em] text-yellow-500 mb-2">
