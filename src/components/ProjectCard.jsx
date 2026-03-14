@@ -10,12 +10,8 @@ import { Github, ExternalLink, Eye, ChevronDown, ChevronUp } from 'lucide-react'
 import clsx from 'clsx'
 
 const MAX_TILT = 12
-// damping:42 — critically damped, snaps back instantly on mouse leave
-const SPRING = { stiffness: 300, damping: 42, mass: 0.5 }
+const SPRING   = { stiffness: 300, damping: 42, mass: 0.5 }
 
-// pointer:fine = real mouse (desktop)
-// pointer:coarse = touch (mobile/tablet)
-// Evaluated once — never changes during a session
 const HAS_FINE_POINTER =
   typeof window !== 'undefined' &&
   window.matchMedia('(pointer: fine)').matches
@@ -47,22 +43,20 @@ export default function ProjectCard({ project, isDark, onPreview }) {
   }
   const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0) }
 
+  const toggleExpanded = () => {
+    if (!HAS_FINE_POINTER) setExpanded(o => !o)
+  }
+
   return (
-    // No perspective on touch — zero GPU overhead
     <div style={{ perspective: HAS_FINE_POINTER ? 900 : 'none' }}>
       <motion.div
         ref={cardRef}
-        // Mouse handlers — desktop only
         onMouseMove={HAS_FINE_POINTER  ? handleMouseMove  : undefined}
         onMouseLeave={HAS_FINE_POINTER ? handleMouseLeave : undefined}
-        // 3D style — desktop only
-        // On mobile: empty object = no transform, no compositing layer
         style={HAS_FINE_POINTER
           ? { rotateX, rotateY, transformStyle: 'preserve-3d', willChange: 'transform' }
           : {}
         }
-        // whileHover undefined on touch — prevents stuck scaled state
-        // Touch triggers hover but has no mouseleave to reset it
         whileHover={HAS_FINE_POINTER ? { scale: 1.02, z: 20 } : undefined}
         transition={{ duration: 0.25 }}
         className={clsx(
@@ -81,20 +75,19 @@ export default function ProjectCard({ project, isDark, onPreview }) {
           />
         )}
 
-        {/* Thumbnail */}
-        <div className={clsx(
-          'h-44 flex items-center justify-center text-6xl relative overflow-hidden border-b transition-all duration-300',
-          isDark ? 'bg-black/60 border-white/[0.06]' : 'bg-slate-50 border-black/[0.05]'
-        )}>
+        {/* Thumbnail — tapping this toggles expand on mobile */}
+        <div
+          className={clsx(
+            'h-44 flex items-center justify-center text-6xl relative overflow-hidden border-b transition-all duration-300',
+            isDark ? 'bg-black/60 border-white/[0.06]' : 'bg-slate-50 border-black/[0.05]'
+          )}
+          onClick={toggleExpanded}
+        >
           <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/0 to-yellow-400/0 group-hover:from-yellow-500/[0.08] group-hover:to-yellow-400/[0.08] transition-all duration-300" />
 
-          {/* translateZ on emoji — desktop only */}
           <span
             className="relative z-10"
-            style={{
-              display: 'block',
-              transform: HAS_FINE_POINTER ? 'translateZ(30px)' : 'none',
-            }}
+            style={{ display: 'block', transform: HAS_FINE_POINTER ? 'translateZ(30px)' : 'none' }}
           >
             {project.emoji}
           </span>
@@ -110,26 +103,24 @@ export default function ProjectCard({ project, isDark, onPreview }) {
             </span>
           )}
 
-          {/* Mobile tap hint */}
-          <div className={clsx(
-            'absolute bottom-2 left-1/2 -translate-x-1/2 md:hidden',
-            'px-2.5 py-1 rounded-full text-[0.6rem] font-mono flex items-center gap-1',
-            isDark ? 'bg-black/50 text-slate-400' : 'bg-white/70 text-slate-500'
-          )}>
-            {expanded ? <ChevronUp size={9} /> : <ChevronDown size={9} />}
-            {expanded ? 'tap to collapse' : 'tap to expand'}
-          </div>
+          {/* Mobile expand hint */}
+          {!HAS_FINE_POINTER && (
+            <div className={clsx(
+              'absolute bottom-2 left-1/2 -translate-x-1/2',
+              'px-2.5 py-1 rounded-full text-[0.6rem] font-mono flex items-center gap-1',
+              isDark ? 'bg-black/50 text-slate-400' : 'bg-white/70 text-slate-500'
+            )}>
+              {expanded ? <ChevronUp size={9} /> : <ChevronDown size={9} />}
+              {expanded ? 'tap to collapse' : 'tap to expand'}
+            </div>
+          )}
         </div>
 
         {/* Body */}
         <div
           className="p-6 flex flex-col flex-1"
-          // translateZ on body — desktop only
           style={{ transform: HAS_FINE_POINTER ? 'translateZ(10px)' : 'none' }}
-          onClick={() => {
-            // Use HAS_FINE_POINTER instead of window.innerWidth
-            if (!HAS_FINE_POINTER) setExpanded(o => !o)
-          }}
+          onClick={toggleExpanded}
         >
           <div className="font-mono text-[0.68rem] uppercase tracking-[0.1em] text-yellow-500 mb-2">
             {project.category.join(' · ')}
@@ -139,23 +130,23 @@ export default function ProjectCard({ project, isDark, onPreview }) {
             {project.title}
           </h3>
 
-          {/* Description — always visible on desktop, toggled on mobile */}
-          <div className={clsx('md:block', expanded ? 'block' : 'hidden')}>
+          {/* On desktop: always show full description
+              On mobile: show one-line teaser when collapsed, full when expanded */}
+          {HAS_FINE_POINTER ? (
             <p className={clsx('text-sm leading-relaxed mb-4', isDark ? 'text-slate-400' : 'text-slate-500')}>
               {project.shortDesc}
             </p>
-          </div>
+          ) : expanded ? (
+            <p className={clsx('text-sm leading-relaxed mb-4', isDark ? 'text-slate-400' : 'text-slate-500')}>
+              {project.shortDesc}
+            </p>
+          ) : (
+            <p className={clsx('text-sm leading-relaxed mb-3 line-clamp-1', isDark ? 'text-slate-500' : 'text-slate-400')}>
+              {project.shortDesc}
+            </p>
+          )}
 
-          {/* Short teaser on mobile when collapsed */}
-          <p className={clsx(
-            'text-sm leading-relaxed mb-3 md:hidden line-clamp-1',
-            expanded ? 'hidden' : 'block',
-            isDark ? 'text-slate-500' : 'text-slate-400'
-          )}>
-            {project.shortDesc}
-          </p>
-
-          {/* Tags */}
+          {/* Tags — always visible */}
           <div className="flex flex-wrap gap-1.5 mb-5">
             {project.tech.map(t => (
               <span key={t} className={clsx(
@@ -169,13 +160,17 @@ export default function ProjectCard({ project, isDark, onPreview }) {
             ))}
           </div>
 
-          {/* Action buttons */}
-          <AnimatePresence>
-            {(expanded || true) && (
+          {/* Buttons:
+              Desktop — always visible
+              Mobile  — only when expanded */}
+          {(HAS_FINE_POINTER || expanded) && (
+            <AnimatePresence>
               <motion.div
-                className={clsx('flex gap-2', 'md:flex', expanded ? 'flex' : 'hidden md:flex')}
+                key="buttons"
+                className="flex gap-2"
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 8 }}
                 transition={{ duration: 0.2 }}
               >
                 <button
@@ -221,9 +216,8 @@ export default function ProjectCard({ project, isDark, onPreview }) {
                   <ExternalLink size={12} /> Demo
                 </a>
               </motion.div>
-            )}
-          </AnimatePresence>
-
+            </AnimatePresence>
+          )}
         </div>
       </motion.div>
     </div>
