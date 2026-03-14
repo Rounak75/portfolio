@@ -10,17 +10,18 @@ import { Github, ExternalLink, Eye, ChevronDown, ChevronUp } from 'lucide-react'
 import clsx from 'clsx'
 
 const MAX_TILT = 12
-// damping:42 = critically damped, snaps back instantly on mouse leave
+// damping:42 — critically damped, snaps back instantly on mouse leave
 const SPRING = { stiffness: 300, damping: 42, mass: 0.5 }
 
-// pointer:fine = real mouse. pointer:coarse = touch.
-// Correct check — window.innerWidth breaks on wide tablets with touch.
+// pointer:fine = real mouse (desktop)
+// pointer:coarse = touch (mobile/tablet)
+// Evaluated once — never changes during a session
 const HAS_FINE_POINTER =
   typeof window !== 'undefined' &&
   window.matchMedia('(pointer: fine)').matches
 
 export default function ProjectCard({ project, isDark, onPreview }) {
-  const cardRef  = useRef(null)
+  const cardRef = useRef(null)
   const [expanded, setExpanded] = useState(false)
 
   const mouseX = useMotionValue(0)
@@ -34,7 +35,8 @@ export default function ProjectCard({ project, isDark, onPreview }) {
 
   const shineBg = useTransform(
     [shineX, shineY],
-    ([x, y]) => `radial-gradient(circle at ${x} ${y}, rgba(255,255,255,0.09) 0%, transparent 65%)`
+    ([x, y]) =>
+      `radial-gradient(circle at ${x} ${y}, rgba(255,255,255,0.09) 0%, transparent 65%)`
   )
 
   const handleMouseMove = e => {
@@ -46,15 +48,21 @@ export default function ProjectCard({ project, isDark, onPreview }) {
   const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0) }
 
   return (
+    // No perspective on touch — zero GPU overhead
     <div style={{ perspective: HAS_FINE_POINTER ? 900 : 'none' }}>
       <motion.div
         ref={cardRef}
+        // Mouse handlers — desktop only
         onMouseMove={HAS_FINE_POINTER  ? handleMouseMove  : undefined}
         onMouseLeave={HAS_FINE_POINTER ? handleMouseLeave : undefined}
+        // 3D style — desktop only
+        // On mobile: empty object = no transform, no compositing layer
         style={HAS_FINE_POINTER
           ? { rotateX, rotateY, transformStyle: 'preserve-3d', willChange: 'transform' }
           : {}
         }
+        // whileHover undefined on touch — prevents stuck scaled state
+        // Touch triggers hover but has no mouseleave to reset it
         whileHover={HAS_FINE_POINTER ? { scale: 1.02, z: 20 } : undefined}
         transition={{ duration: 0.25 }}
         className={clsx(
@@ -65,7 +73,7 @@ export default function ProjectCard({ project, isDark, onPreview }) {
             : 'bg-white border-black/[0.07] shadow-sm hover:border-yellow-500/50'
         )}
       >
-        {/* Shine overlay — desktop only, no GPU cost on mobile */}
+        {/* Shine overlay — desktop only */}
         {HAS_FINE_POINTER && (
           <motion.div
             className="absolute inset-0 pointer-events-none z-20 rounded-2xl"
@@ -79,12 +87,18 @@ export default function ProjectCard({ project, isDark, onPreview }) {
           isDark ? 'bg-black/60 border-white/[0.06]' : 'bg-slate-50 border-black/[0.05]'
         )}>
           <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/0 to-yellow-400/0 group-hover:from-yellow-500/[0.08] group-hover:to-yellow-400/[0.08] transition-all duration-300" />
+
+          {/* translateZ on emoji — desktop only */}
           <span
             className="relative z-10"
-            style={{ display: 'block', transform: HAS_FINE_POINTER ? 'translateZ(30px)' : 'none' }}
+            style={{
+              display: 'block',
+              transform: HAS_FINE_POINTER ? 'translateZ(30px)' : 'none',
+            }}
           >
             {project.emoji}
           </span>
+
           {project.featured && (
             <span className={clsx(
               'absolute top-3 right-3 px-2.5 py-1 rounded-full font-mono text-[0.65rem] font-semibold',
@@ -110,8 +124,10 @@ export default function ProjectCard({ project, isDark, onPreview }) {
         {/* Body */}
         <div
           className="p-6 flex flex-col flex-1"
+          // translateZ on body — desktop only
           style={{ transform: HAS_FINE_POINTER ? 'translateZ(10px)' : 'none' }}
           onClick={() => {
+            // Use HAS_FINE_POINTER instead of window.innerWidth
             if (!HAS_FINE_POINTER) setExpanded(o => !o)
           }}
         >
@@ -123,12 +139,14 @@ export default function ProjectCard({ project, isDark, onPreview }) {
             {project.title}
           </h3>
 
+          {/* Description — always visible on desktop, toggled on mobile */}
           <div className={clsx('md:block', expanded ? 'block' : 'hidden')}>
             <p className={clsx('text-sm leading-relaxed mb-4', isDark ? 'text-slate-400' : 'text-slate-500')}>
               {project.shortDesc}
             </p>
           </div>
 
+          {/* Short teaser on mobile when collapsed */}
           <p className={clsx(
             'text-sm leading-relaxed mb-3 md:hidden line-clamp-1',
             expanded ? 'hidden' : 'block',
@@ -137,6 +155,7 @@ export default function ProjectCard({ project, isDark, onPreview }) {
             {project.shortDesc}
           </p>
 
+          {/* Tags */}
           <div className="flex flex-wrap gap-1.5 mb-5">
             {project.tech.map(t => (
               <span key={t} className={clsx(
@@ -150,6 +169,7 @@ export default function ProjectCard({ project, isDark, onPreview }) {
             ))}
           </div>
 
+          {/* Action buttons */}
           <AnimatePresence>
             {(expanded || true) && (
               <motion.div
