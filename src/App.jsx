@@ -26,6 +26,7 @@ import Footer    from './components/Footer.jsx'
 import LoadingScreen     from './components/LoadingScreen.jsx'
 import ScrollProgressBar from './components/ScrollProgressBar.jsx'
 import CommandPalette    from './components/CommandPalette.jsx'
+import CustomCursor      from './components/CustomCursor.jsx'
 
 // ── Section entrance directions ───────────────────────
 // Each section slides in from a different direction,
@@ -94,6 +95,9 @@ export default function App() {
       {/* Command palette — always mounted, opens on Cmd+K */}
       <CommandPalette isDark={isDark} onToggleTheme={triggerRipple} />
 
+      {/* Custom gold cursor — desktop only, auto-hides on touch devices */}
+      <CustomCursor />
+      
       {/* Background orbs */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="orb orb-1" />

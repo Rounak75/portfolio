@@ -66,11 +66,23 @@ function EmailCopyCard({ isDark, surface }) {
   }
 
   return (
-    <div className={clsx('flex items-center gap-4 px-4 py-3.5 rounded-xl border transition-all duration-200', surface)}>
-      {/* Icon */}
-      <div className={clsx('w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0', isDark ? 'bg-white/[0.06]' : 'bg-black/[0.05]')}>
-        <Mail size={16} className="text-yellow-500" />
-      </div>
+  <motion.div
+    className={clsx('flex items-center gap-4 px-4 py-3.5 rounded-xl border transition-all duration-200', surface)}
+    whileHover={{
+      scale: 1.02,
+      borderColor: 'rgba(212,168,67,0.45)',
+      boxShadow: '0 0 20px rgba(212,168,67,0.1)',
+      transition: { duration: 0.2 }
+    }}
+    whileTap={{ scale: 0.98 }}
+  >
+    {/* Icon */}
+    <motion.div
+      className={clsx('w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0', isDark ? 'bg-white/[0.06]' : 'bg-black/[0.05]')}
+      whileHover={{ scale: 1.15, rotate: 8, backgroundColor: 'rgba(212,168,67,0.15)', transition: { duration: 0.2 } }}
+    >
+      <Mail size={16} className="text-yellow-500" />
+    </motion.div>
 
       {/* Text */}
       <div className="flex-1 min-w-0">
@@ -113,35 +125,64 @@ function EmailCopyCard({ isDark, surface }) {
           )}
         </AnimatePresence>
       </motion.button>
-    </div>
+    </motion.div>
   )
 }
 
 // ── Generic contact card ──────────────────────────────
 function ContactCard({ icon: Icon, label, value, href, isDark, surface }) {
+  const cardMotion = {
+    whileHover: {
+      scale: 1.02,
+      x: 4,
+      borderColor: 'rgba(212,168,67,0.45)',
+      boxShadow: '0 0 20px rgba(212,168,67,0.1)',
+      transition: { duration: 0.2 }
+    },
+    whileTap: { scale: 0.98 },
+  }
+
+  const iconMotion = {
+    whileHover: {
+      scale: 1.18,
+      rotate: 10,
+      backgroundColor: 'rgba(212,168,67,0.15)',
+      transition: { duration: 0.2 }
+    }
+  }
+
+  const inner = (
+    <>
+      <motion.div
+        className={clsx('w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0', isDark ? 'bg-white/[0.06]' : 'bg-black/[0.05]')}
+        {...iconMotion}
+      >
+        <Icon size={16} className="text-yellow-500" />
+      </motion.div>
+      <div>
+        <div className="font-mono text-[0.65rem] uppercase tracking-[0.1em] text-slate-500 mb-0.5">{label}</div>
+        <div className="text-sm font-medium">{value}</div>
+      </div>
+    </>
+  )
+
   return href ? (
-    <a href={href} target={href.startsWith('mailto') ? undefined : '_blank'}
+    <motion.a
+      href={href}
+      target={href.startsWith('mailto') ? undefined : '_blank'}
       rel="noopener noreferrer"
-      className={clsx('flex items-center gap-4 px-4 py-3.5 rounded-xl border transition-all duration-200 hover:translate-x-1', surface, isDark ? 'hover:border-yellow-500/25' : 'hover:border-cyan-300/50')}
+      className={clsx('flex items-center gap-4 px-4 py-3.5 rounded-xl border transition-colors duration-200', surface)}
+      {...cardMotion}
     >
-      <div className={clsx('w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0', isDark ? 'bg-white/[0.06]' : 'bg-black/[0.05]')}>
-        <Icon size={16} className="text-yellow-500" />
-      </div>
-      <div>
-        <div className="font-mono text-[0.65rem] uppercase tracking-[0.1em] text-slate-500 mb-0.5">{label}</div>
-        <div className="text-sm font-medium">{value}</div>
-      </div>
-    </a>
+      {inner}
+    </motion.a>
   ) : (
-    <div className={clsx('flex items-center gap-4 px-4 py-3.5 rounded-xl border', surface)}>
-      <div className={clsx('w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0', isDark ? 'bg-white/[0.06]' : 'bg-black/[0.05]')}>
-        <Icon size={16} className="text-yellow-500" />
-      </div>
-      <div>
-        <div className="font-mono text-[0.65rem] uppercase tracking-[0.1em] text-slate-500 mb-0.5">{label}</div>
-        <div className="text-sm font-medium">{value}</div>
-      </div>
-    </div>
+    <motion.div
+      className={clsx('flex items-center gap-4 px-4 py-3.5 rounded-xl border', surface)}
+      {...cardMotion}
+    >
+      {inner}
+    </motion.div>
   )
 }
 
@@ -250,14 +291,33 @@ export default function Contact({ isDark }) {
               and interesting conversations about AI and tech.
             </p>
 
-            <div className="space-y-3">
-              {/* Email card with copy button */}
-              <EmailCopyCard isDark={isDark} surface={surface} />
-              {/* Other contact cards */}
-              <ContactCard icon={Linkedin} label="LinkedIn" value="linkedin.com/in/rounakmahato" href={personal.socials.linkedin} isDark={isDark} surface={surface} />
-              <ContactCard icon={Github}   label="GitHub"   value="github.com/Rounak75"          href={personal.socials.github}   isDark={isDark} surface={surface} />
-              <ContactCard icon={MapPin}   label="Location" value={personal.location}             href={null}                       isDark={isDark} surface={surface} />
-            </div>
+            <motion.div
+              className="space-y-3"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={{
+                  hidden: {},
+                  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.15 } }
+              }}
+            >
+            {[
+            <EmailCopyCard key="email" isDark={isDark} surface={surface} />,
+            <ContactCard key="linkedin" icon={Linkedin} label="LinkedIn" value="linkedin.com/in/rounakmahato" href={personal.socials.linkedin} isDark={isDark} surface={surface} />,
+            <ContactCard key="github"   icon={Github}   label="GitHub"   value="github.com/Rounak75"          href={personal.socials.github}   isDark={isDark} surface={surface} />,
+            <ContactCard key="location" icon={MapPin}   label="Location" value={personal.location}             href={null}                       isDark={isDark} surface={surface} />,
+          ].map((card, i) => (
+          <motion.div
+        key={i}
+        variants={{
+        hidden:  { opacity: 0, y: 20, scale: 0.95 },
+        visible: { opacity: 1, y: 0,  scale: 1, transition: { type: 'spring', stiffness: 280, damping: 24 } }
+       }}
+        >
+          {card}
+          </motion.div>
+          ))}
+          </motion.div>
 
             <div className={clsx('mt-6 flex items-center gap-2.5 px-4 py-3 rounded-xl border text-sm',
               isDark ? 'bg-emerald-400/[0.06] border-emerald-400/20 text-emerald-400' : 'bg-emerald-50 border-emerald-200 text-emerald-700'

@@ -173,11 +173,26 @@ body {
 .skill-fill {
   height: 100%;
   border-radius: 9999px;
-  background: linear-gradient(90deg, #d4a843, #f0c060);
+  background: linear-gradient(
+    90deg,
+    #92650a 0%,
+    #d4a843 30%,
+    #f0c060 60%,
+    #fde68a 80%,
+    #f0c060 100%
+  );
+  background-size: 200% 100%;
   width: 0%;
-  /* Width animates to the target value when triggered */
   transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 12px rgba(212, 168, 67, 0.4);
+  box-shadow: 0 0 14px rgba(212, 168, 67, 0.5), 0 0 4px rgba(240, 192, 96, 0.3);
+  animation: skill-shimmer 2.5s linear 4;
+  animation-delay: 1.3s;
+  animation-fill-mode: both;
+}
+
+@keyframes skill-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
 /* ─────────────────────────────────────────────
@@ -369,4 +384,14 @@ body {
   );
   background-size: 200% 100%;
   animation: shimmer 1.6s ease-in-out infinite;
+}
+/* ─────────────────────────────────────────────
+   CUSTOM CURSOR — hide native cursor on desktop
+   so the gold cursor replaces it cleanly.
+   pointer: coarse = touch device, keep default.
+   ───────────────────────────────────────────── */
+@media (pointer: fine) {
+  *, *::before, *::after {
+    cursor: none !important;
+  }
 }

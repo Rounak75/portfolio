@@ -37,22 +37,30 @@ export const personal = {
 
 // ── Skills ───────────────────────────────────────────────
 export const skills = [
-  { name: "Python",           emoji: "🐍",  pct: 90, color: "from-cyan-400 to-violet-400" },
-  { name: "Machine Learning", emoji: "🤖",  pct: 80, color: "from-violet-400 to-emerald-400" },
-  { name: "React.js",         emoji: "⚛️",  pct: 78, color: "from-cyan-400 to-violet-400" },
-  { name: "JavaScript",       emoji: "🌐",  pct: 80, color: "from-emerald-400 to-cyan-400" },
-  { name: "Django",           emoji: "🔧",  pct: 75, color: "from-violet-400 to-cyan-400" },
-  { name: "Computer Vision",  emoji: "👁️",  pct: 72, color: "from-cyan-400 to-emerald-400" },
-  { name: "Java / C++",       emoji: "☕",  pct: 75, color: "from-violet-400 to-emerald-400" },
-  { name: "SQL / MongoDB",    emoji: "🗄️",  pct: 72, color: "from-emerald-400 to-violet-400" },
-  { name: "HTML / CSS",       emoji: "🎨",  pct: 88, color: "from-cyan-400 to-violet-400" },
+  { name: "Python",           emoji: "🐍",  pct: 90, logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" },
+  { name: "Machine Learning", emoji: "🤖",  pct: 80, logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg" },
+  { name: "React.js",         emoji: "⚛️",  pct: 78, logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
+  { name: "JavaScript",       emoji: "🌐",  pct: 80, logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" },
+  { name: "Django",           emoji: "🔧",  pct: 75, logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg", invertDark: true },
+  { name: "Computer Vision",  emoji: "👁️",  pct: 72, logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/opencv/opencv-original.svg" },
+  { name: "Java / C++",       emoji: "☕",  pct: 75, logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" },
+  { name: "SQL / MongoDB",    emoji: "🗄️",  pct: 72, logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" },
+  { name: "HTML / CSS",       emoji: "🎨",  pct: 88, logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" },
 ];
 
 // ── Tech Chips ───────────────────────────────────────────
 export const techStack = [
-  "🐍 Python", "⚛️ React", "🔧 Django", "🟢 Node.js",
-  "🧠 TensorFlow", "📊 Scikit-learn", "🐙 Git",
-  "🗄️ PostgreSQL", "🍃 MongoDB", "🐹 Go", "☁️ Cloud",
+  { name: "Python",      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" },
+  { name: "React",       logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
+  { name: "Django",      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg" },
+  { name: "Node.js",     logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
+  { name: "TensorFlow",  logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg" },
+  { name: "Git",         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" },
+  { name: "PostgreSQL",  logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" },
+  { name: "MongoDB",     logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" },
+  { name: "Go",          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg" },
+  { name: "JavaScript",  logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" },
+  { name: "Docker",      logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" },
 ];
 
 // ── Education Timeline ────────────────────────────────────

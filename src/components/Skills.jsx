@@ -1,12 +1,5 @@
 // ═══════════════════════════════════════════════════════
 // src/components/Skills.jsx
-//
-// SKILLS SECTION
-//
-// Features:
-//  • Animated progress bars (trigger on scroll into view)
-//  • Tech stack chip row
-//  • All data comes from src/data/personal.js
 // ═══════════════════════════════════════════════════════
 
 import { useInView } from 'react-intersection-observer'
@@ -16,28 +9,44 @@ import { SectionLabel, SectionTitle, SectionDesc } from './ui/SectionHeader.jsx'
 import clsx from 'clsx'
 
 // ── Single animated skill bar ─────────────────────────
-// The bar width animates from 0% → target% when it enters view
 function SkillBar({ skill, isDark, inView }) {
   return (
     <div className={clsx(
       'rounded-2xl border p-5 transition-all duration-300',
       isDark
-        ? 'bg-white/[0.04] border-white/[0.08] hover:border-yellow-500/25 hover:shadow-lg hover:shadow-cyan-400/[0.07]'
-        : 'bg-white/80 border-amber-200/60 shadow-sm hover:border-yellow-500/50 hover:shadow-md hover:shadow-yellow-500/[0.08]'
+        ? 'bg-yellow-500/[0.06] border-yellow-500/20 hover:border-yellow-500/45 hover:bg-yellow-500/[0.1] hover:shadow-lg hover:shadow-yellow-500/[0.1]'
+        : 'bg-yellow-50/80 border-yellow-300/60 shadow-sm hover:border-yellow-400/70 hover:shadow-md hover:shadow-yellow-200/50'
     )}>
-      {/* Top row: icon + name + percentage */}
+      {/* Top row: logo + name + percentage */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2.5">
-          {/* Emoji icon */}
-          <span className={clsx(
-            'w-8 h-8 rounded-lg flex items-center justify-center text-lg',
+          {/* Real tech logo */}
+          <div className={clsx(
+            'w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0',
             isDark ? 'bg-white/[0.06]' : 'bg-amber-100/60'
           )}>
-            {skill.emoji}
-          </span>
+            {skill.logo ? (
+              <img
+                src={skill.logo}
+                alt={skill.name}
+                width={20}
+                height={20}
+                style={{
+                  filter: isDark && skill.invertDark ? 'invert(1) brightness(1.2)' : 'none',
+                }}
+                onError={e => {
+                  e.currentTarget.style.display = 'none'
+                  e.currentTarget.nextSibling.style.display = 'flex'
+                }}
+              />
+            ) : (
+              <span className="text-lg">{skill.emoji}</span>
+            )}
+            {/* Fallback emoji hidden by default */}
+            <span className="text-lg hidden">{skill.emoji}</span>
+          </div>
           <span className="font-semibold text-sm">{skill.name}</span>
         </div>
-        {/* Percentage label */}
         <span className="font-mono text-xs font-semibold text-yellow-500">
           {skill.pct}%
         </span>
@@ -48,12 +57,11 @@ function SkillBar({ skill, isDark, inView }) {
         'h-1.5 rounded-full overflow-hidden',
         isDark ? 'bg-white/[0.08]' : 'bg-amber-100/80'
       )}>
-        {/* Animated fill — width goes 0 → pct when inView */}
         <motion.div
           className="skill-fill"
           initial={{ width: 0 }}
           animate={{ width: inView ? `${skill.pct}%` : '0%' }}
-          transition={{ duration: 1.2, delay: 0.1, ease: [0.4,0,0.2,1] }}
+          transition={{ duration: 1.2, delay: 0.1, ease: [0.4, 0, 0.2, 1] }}
         />
       </div>
     </div>
@@ -61,12 +69,11 @@ function SkillBar({ skill, isDark, inView }) {
 }
 
 export default function Skills({ isDark }) {
-  // Watch the section — when it scrolls into view, trigger bar animations
   const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true })
 
   return (
     <section id="skills" className="py-16 md:py-28" ref={ref}>
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
         {/* Section header */}
         <motion.div
@@ -82,7 +89,7 @@ export default function Skills({ isDark }) {
           </SectionDesc>
         </motion.div>
 
-        {/* Skills grid — 3 columns on desktop, 2 on tablet, 1 on mobile */}
+        {/* Skills grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-12">
           {skills.map((skill, i) => (
             <motion.div
@@ -96,33 +103,43 @@ export default function Skills({ isDark }) {
           ))}
         </div>
 
-        {/* ── Tech chip row ───────────────────────────── */}
+        {/* ── Tech chip row — compact, wrapping ──────── */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="flex flex-wrap gap-3 mt-12"
+          className="flex flex-wrap gap-2 mt-10"
         >
           {techStack.map((chip, i) => (
-            <motion.span
-              key={chip}
-              // Stagger each chip's entrance
-              initial={{ opacity: 0, scale: 0.9 }}
+            <motion.div
+              key={chip.name}
+              initial={{ opacity: 0, scale: 0.85 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.04 }}
-              whileHover={{ y: -3, scale: 1.04 }}
+              transition={{ delay: i * 0.04, type: 'spring', stiffness: 260, damping: 20 }}
+              whileHover={{ y: -3, scale: 1.07 }}
               className={clsx(
-                'px-4 py-2 rounded-full text-sm font-medium cursor-default',
+                'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium cursor-default',
                 'border transition-all duration-200',
                 isDark
-                  ? 'bg-white/[0.04] border-white/[0.08] text-slate-300 hover:border-yellow-500/30 hover:text-yellow-500 hover:shadow-md hover:shadow-cyan-400/10'
-                  : 'bg-white/80 border-amber-200/60 text-stone-600 hover:border-yellow-500/50 hover:text-yellow-700 hover:bg-amber-50 hover:shadow-sm'
+                  ? 'bg-yellow-500/[0.08] border-yellow-500/25 text-yellow-200 hover:bg-yellow-500/[0.15] hover:border-yellow-500/50 hover:text-yellow-300'
+                  : 'bg-yellow-50 border-yellow-300/70 text-yellow-800 hover:bg-yellow-100 hover:border-yellow-400 hover:text-yellow-900'
               )}
             >
-              {chip}
-            </motion.span>
+              <img
+                src={chip.logo}
+                alt={chip.name}
+                width={14}
+                height={14}
+                className="flex-shrink-0"
+                style={{
+                  filter: isDark && chip.invertDark ? 'invert(1) brightness(1.2)' : 'none',
+                }}
+                onError={e => { e.currentTarget.style.display = 'none' }}
+              />
+              {chip.name}
+            </motion.div>
           ))}
         </motion.div>
 
