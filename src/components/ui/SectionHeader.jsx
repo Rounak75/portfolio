@@ -29,12 +29,14 @@ export function SectionLabel({ isDark, number, label }) {
 
 export function SectionTitle({ children, className = '' }) {
   return (
-    <h2
-      className={clsx('font-display font-extrabold tracking-tight leading-tight', className)}
-      style={{ fontSize: 'clamp(1.9rem, 4vw, 2.75rem)' }}
-    >
-      {children}
-    </h2>
+    <div className="section-3d-header">
+      <h2
+        className={clsx('font-display font-extrabold tracking-tight leading-tight', className)}
+        style={{ fontSize: 'clamp(1.9rem, 4vw, 2.75rem)' }}
+      >
+        {children}
+      </h2>
+    </div>
   )
 }
 

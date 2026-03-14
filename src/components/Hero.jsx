@@ -315,7 +315,7 @@ export default function Hero({ isDark }) {
                 'border flex flex-col items-center justify-center',
                 'relative overflow-hidden',
                 isDark
-                  ? 'bg-[#0a0a0a] border-yellow-500/25 shadow-[0_0_60px_rgba(212,168,67,0.12),0_0_100px_rgba(167,139,250,0.1)]'
+                  ? 'bg-[#0a0a0a] border-yellow-500/25 shadow-[0_4px_8px_rgba(0,0,0,0.5),0_32px_80px_rgba(0,0,0,0.4),0_0_60px_rgba(212,168,67,0.12)]'
                   : 'bg-stone-900 border-yellow-500/25 shadow-[0_0_40px_rgba(212,168,67,0.12)]'
               )}>
                 <div className={clsx(

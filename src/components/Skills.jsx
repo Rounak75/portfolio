@@ -12,7 +12,7 @@ import clsx from 'clsx'
 function SkillBar({ skill, isDark, inView }) {
   return (
     <div className={clsx(
-      'rounded-2xl border p-5 transition-all duration-300',
+      'rounded-2xl border p-5 transition-all duration-300 card-3d ground-shadow',
       isDark
         ? 'bg-yellow-500/[0.06] border-yellow-500/20 hover:border-yellow-500/45 hover:bg-yellow-500/[0.1] hover:shadow-lg hover:shadow-yellow-500/[0.1]'
         : 'bg-yellow-50/80 border-yellow-300/60 shadow-sm hover:border-yellow-400/70 hover:shadow-md hover:shadow-yellow-200/50'

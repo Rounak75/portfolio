@@ -9,9 +9,10 @@
 //     unique direction for visual variety
 // ═══════════════════════════════════════════════════════
 
-import { useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
-// ADD this line after the existing imports
+import { useState, useEffect } from 'react'
+// FIX 1: Added useScroll — was missing, causing ParallaxOrbs to crash
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
+import { useLenis } from './hooks/useLenis.js'
 import { useRippleTheme } from './hooks/useRippleTheme.js'
 
 import Navbar    from './components/Navbar.jsx'
@@ -28,13 +29,25 @@ import ScrollProgressBar from './components/ScrollProgressBar.jsx'
 import CommandPalette    from './components/CommandPalette.jsx'
 import CustomCursor      from './components/CustomCursor.jsx'
 
-// ── Section entrance directions ───────────────────────
-// Each section slides in from a different direction,
-// giving the page a sense of physical depth as you scroll.
-//
-// ✏️ Customise: change x/y values or set both to 0 for a
-//    pure fade with no movement.
+// ── Parallax orbs at different Z depths ───────────────
+function ParallaxOrbs() {
+  const { scrollYProgress } = useScroll()
+  const y1 = useTransform(scrollYProgress, [0, 1], ['0%',  '-25%'])
+  const y2 = useTransform(scrollYProgress, [0, 1], ['0%',  '-45%'])
+  const y3 = useTransform(scrollYProgress, [0, 1], ['0%',  '-15%'])
+  const x2 = useTransform(scrollYProgress, [0, 1], ['0%',  '8%'])
 
+  return (
+    <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+      <motion.div className="orb orb-1" style={{ y: y1 }} />
+      <motion.div className="orb orb-2" style={{ y: y2, x: x2 }} />
+      <motion.div className="orb orb-3" style={{ y: y3 }} />
+    </div>
+  )
+}
+
+// ── Section entrance directions ───────────────────────
+// FIX 2: Removed duplicate isMobile/isMobileApp — kept one
 const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
 
 const SECTION_VARIANTS = {
@@ -42,14 +55,21 @@ const SECTION_VARIANTS = {
     opacity: 0,
     x: isMobile ? 0 : (custom?.x ?? 0),
     y: custom?.y ?? 40,
-    ...(isMobile ? {} : { filter: 'blur(4px)' }),
+    z: -40,
+    scale: 0.97,
+    ...(isMobile ? {} : { filter: 'blur(3px)' }),
   }),
   visible: {
     opacity: 1,
     x: 0,
     y: 0,
+    z: 0,
+    scale: 1,
     filter: 'blur(0px)',
-    transition: { duration: isMobile ? 0.4 : 0.65, ease: [0.22, 1, 0.36, 1] },
+    transition: {
+      duration: isMobile ? 0.4 : 0.7,
+      ease: [0.22, 1, 0.36, 1],
+    },
   },
 }
 
@@ -61,7 +81,6 @@ function SectionReveal({ children, custom }) {
       custom={custom}
       initial="hidden"
       whileInView="visible"
-      // once: true — plays once, doesn't reverse when scrolling back up
       viewport={{ once: true, amount: 0.08 }}
     >
       {children}
@@ -73,6 +92,9 @@ export default function App() {
 
   // ── Theme ─────────────────────────────────────────
   const { isDark, triggerRipple } = useRippleTheme(true)
+
+  // FIX 3: useLenis moved inside App() — hooks must be inside a component
+  useLenis()
 
   // ── Loading screen ────────────────────────────────
   const [loading, setLoading] = useState(true)
@@ -97,13 +119,9 @@ export default function App() {
 
       {/* Custom gold cursor — desktop only, auto-hides on touch devices */}
       <CustomCursor />
-      
-      {/* Background orbs */}
-      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="orb orb-1" />
-        <div className="orb orb-2" />
-        <div className="orb orb-3" />
-      </div>
+
+      {/* Background orbs — with parallax depth */}
+      <ParallaxOrbs />
 
       {/* Noise texture */}
       <div className="noise-overlay" />

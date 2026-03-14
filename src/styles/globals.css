@@ -395,3 +395,124 @@ body {
     cursor: none !important;
   }
 }
+
+/* ─────────────────────────────────────────────
+   LENIS SMOOTH SCROLL
+   Lenis sets html.lenis-smooth during operation.
+   Prevent browser native smooth-scroll interfering.
+   ───────────────────────────────────────────── */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ─────────────────────────────────────────────
+   3D DEPTH SYSTEM
+   Creates a global perspective context so
+   elements can be layered at different Z depths.
+   ───────────────────────────────────────────── */
+
+/* Parallax depth layers */
+.depth-far    { transform: translateZ(-80px) scale(1.28); }
+.depth-mid    { transform: translateZ(-40px) scale(1.14); }
+.depth-near   { transform: translateZ(0px); }
+.depth-front  { transform: translateZ(20px); }
+
+/* Section header 3D pop */
+.section-3d-header {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+.section-3d-header h2 {
+  transform: translateZ(10px);
+  display: inline-block;
+}
+
+/* Card depth hover — used on skill/project cards */
+.card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+              box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.card-3d:hover {
+  transform: translateY(-8px) translateZ(20px) rotateX(2deg);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.4),
+              0 0 40px rgba(212,168,67,0.08);
+}
+
+/* Floating animation with Z depth */
+@keyframes float-3d {
+  0%   { transform: translateY(0px) translateZ(0px) rotateX(0deg); }
+  50%  { transform: translateY(-12px) translateZ(10px) rotateX(1deg); }
+  100% { transform: translateY(0px) translateZ(0px) rotateX(0deg); }
+}
+
+/* Scroll-driven depth fog — sections fade in from "behind" */
+.depth-reveal {
+  transform: translateZ(-30px) scale(0.97);
+  opacity: 0;
+  transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1),
+              opacity 0.8s ease;
+}
+.depth-reveal.is-visible {
+  transform: translateZ(0px) scale(1);
+  opacity: 1;
+}
+
+/* Layered shadow system */
+.shadow-3d-sm {
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.3),
+    0 8px 16px rgba(0,0,0,0.2),
+    0 0 0 1px rgba(212,168,67,0.06);
+}
+.shadow-3d-md {
+  box-shadow:
+    0 4px 8px rgba(0,0,0,0.35),
+    0 16px 32px rgba(0,0,0,0.25),
+    0 0 0 1px rgba(212,168,67,0.08),
+    0 0 40px rgba(212,168,67,0.04);
+}
+.shadow-3d-lg {
+  box-shadow:
+    0 8px 16px rgba(0,0,0,0.4),
+    0 32px 64px rgba(0,0,0,0.3),
+    0 0 0 1px rgba(212,168,67,0.1),
+    0 0 80px rgba(212,168,67,0.06);
+}
+
+/* Parallax orbs — deeper blur + scale for far layers */
+.orb-parallax {
+  will-change: transform;
+}
+
+/* Ground shadow under floating cards */
+.ground-shadow::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 10%;
+  right: 10%;
+  height: 20px;
+  background: radial-gradient(ellipse, rgba(0,0,0,0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.ground-shadow:hover::after {
+  opacity: 1;
+}

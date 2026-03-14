@@ -10,11 +10,22 @@ import { personal, experience, education, achievements, certifications } from '.
 import { SectionLabel, SectionTitle } from './ui/SectionHeader.jsx'
 import clsx from 'clsx'
 
-// Evaluated once — no re-renders
-const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+// FIX 1: Use pointer:fine instead of window.innerWidth
+// pointer:fine = real mouse (desktop). pointer:coarse = touch (mobile/tablet).
+// This is the correct API — width-based isMobile is wrong for tablets with mice.
+const HAS_FINE_POINTER =
+  typeof window !== 'undefined' &&
+  window.matchMedia('(pointer: fine)').matches
+
+// Keep isMobile for tap-to-tilt logic on touch devices
+const isMobile = !HAS_FINE_POINTER
 
 const MAX_TILT = 8
-const SPRING   = { stiffness: 300, damping: 30, mass: 0.5 }
+
+// FIX 2: damping raised from 30 → 42
+// damping:30 lets the spring oscillate after mouseLeave — card stays mid-tilt.
+// damping:42 is critically damped — snaps to zero instantly, no overshoot.
+const SPRING = { stiffness: 300, damping: 42, mass: 0.5 }
 
 // ── Fade up wrapper ───────────────────────────────────
 function FadeUp({ children, delay = 0, className = '' }) {
@@ -52,8 +63,8 @@ function TimelineCard({ item, index, isDark, isLast }) {
   const mouseY = useMotionValue(0)
   const springX = useSpring(mouseX, SPRING)
   const springY = useSpring(mouseY, SPRING)
-  const rotateY  = useTransform(springX, [-1, 1], [-MAX_TILT, MAX_TILT])
-  const rotateX  = useTransform(springY, [-1, 1], [MAX_TILT, -MAX_TILT])
+  const rotateY = useTransform(springX, [-1, 1], [-MAX_TILT,  MAX_TILT])
+  const rotateX = useTransform(springY, [-1, 1], [ MAX_TILT, -MAX_TILT])
 
   // Shine position
   const shineX = useTransform(springX, [-1, 1], ['20%', '80%'])
@@ -110,26 +121,30 @@ function TimelineCard({ item, index, isDark, isLast }) {
             damping: 24,
             delay: index * 0.07,
           }}
-          // 3D tilt — active on both desktop and mobile
-          style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+          // FIX 3: willChange only on desktop — tells GPU to pre-promote the layer.
+          // On mobile, willChange:transform creates compositing layers that waste
+          // memory without benefit since tilt is disabled.
+          style={HAS_FINE_POINTER
+            ? { rotateX, rotateY, transformStyle: 'preserve-3d', willChange: 'transform' }
+            : { rotateX, rotateY, transformStyle: 'preserve-3d' }
+          }
           // Desktop hover lift — disabled on mobile to prevent stuck state
           whileHover={isMobile ? undefined : { scale: 1.02, z: 10 }}
-          // Mobile tap handler
+          // FIX 4: Use HAS_FINE_POINTER for mouse handlers — not isMobile width check
+          // Prevents mouse events firing on touch devices that happen to be wide
           onTap={isMobile ? handleTap : undefined}
-          // Desktop mouse handlers
-          onMouseMove={isMobile ? undefined : handleMouseMove}
-          onMouseLeave={isMobile ? undefined : handleMouseLeave}
+          onMouseMove={HAS_FINE_POINTER ? handleMouseMove  : undefined}
+          onMouseLeave={HAS_FINE_POINTER ? handleMouseLeave : undefined}
           className={clsx(
-            'w-full rounded-2xl border p-5 transition-colors duration-300 group relative overflow-hidden cursor-pointer',
+            'w-full rounded-2xl border p-5 transition-colors duration-300 group relative overflow-hidden card-3d ground-shadow',
             isDark
               ? 'bg-white/[0.04] border-white/[0.08] hover:border-yellow-500/30 hover:bg-white/[0.07] hover:shadow-xl hover:shadow-yellow-500/[0.08]'
               : 'bg-white/80 border-amber-200/60 shadow-sm hover:border-yellow-500/50 hover:shadow-md hover:shadow-yellow-500/[0.08]',
-            // Mobile tap visual feedback
             isMobile && tapped ? (isDark ? 'border-yellow-500/40' : 'border-yellow-500/60') : ''
           )}
         >
-          {/* Gold shimmer overlay — follows cursor/tilt */}
-          {!isMobile && (
+          {/* Gold shimmer overlay — desktop only */}
+          {HAS_FINE_POINTER && (
             <motion.div
               className="absolute inset-0 pointer-events-none rounded-2xl z-10"
               style={{ background: shineBg }}
@@ -137,7 +152,11 @@ function TimelineCard({ item, index, isDark, isLast }) {
           )}
 
           {/* Top row: icon + year */}
-          <div className="flex items-center justify-between mb-3" style={{ transform: 'translateZ(8px)' }}>
+          {/* FIX 3 cont: translateZ on children only on desktop */}
+          <div
+            className="flex items-center justify-between mb-3"
+            style={HAS_FINE_POINTER ? { transform: 'translateZ(8px)' } : undefined}
+          >
             <div className={clsx(
               'w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0',
               'bg-gradient-to-br from-yellow-600/20 to-yellow-400/20 border',
@@ -163,7 +182,7 @@ function TimelineCard({ item, index, isDark, isLast }) {
           {/* Title */}
           <h3
             className="font-display font-bold text-sm leading-snug mb-1"
-            style={{ transform: 'translateZ(6px)' }}
+            style={HAS_FINE_POINTER ? { transform: 'translateZ(6px)' } : undefined}
           >
             {item.title}
           </h3>
