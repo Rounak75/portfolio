@@ -50,26 +50,32 @@ export default function ProjectCard({ project, isDark, onPreview }) {
   }
   const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0) }
 
-  // Mobile: tap triggers a quick tilt-and-reset pulse
-  // Gives the 3D feedback feel without needing continuous touch tracking
-  const handleTap = useCallback(() => {
+  // Mobile: tilt toward wherever the user actually tapped on the card
+  const handleTap = useCallback((e) => {
     if (!IS_TOUCH) return
+    const rect = cardRef.current?.getBoundingClientRect()
+    if (!rect) return
+
+    // Use changedTouches (touchend) or touches (touchstart), fall back to pointer event
+    const touch = e.changedTouches?.[0] || e.touches?.[0] || e
+    const x = (touch.clientX - rect.left  - rect.width  / 2) / (rect.width  / 2)
+    const y = (touch.clientY - rect.top   - rect.height / 2) / (rect.height / 2)
+
     setIsTilting(true)
-    // Tilt diagonally
-    mouseX.set(0.5)
-    mouseY.set(-0.4)
-    // Spring back after 350ms
+    mouseX.set(x)
+    mouseY.set(y)
+    // Spring back to flat after 400ms
     setTimeout(() => {
       mouseX.set(0)
       mouseY.set(0)
       setIsTilting(false)
-    }, 350)
+    }, 400)
   }, [mouseX, mouseY])
 
-  // Mobile expand/collapse toggle
-  const toggleExpanded = () => {
+  // Mobile expand/collapse toggle — passes event so tilt uses tap position
+  const toggleExpanded = (e) => {
     if (IS_TOUCH) {
-      handleTap()         // tilt effect on every tap
+      handleTap(e)
       setExpanded(o => !o)
     }
   }
