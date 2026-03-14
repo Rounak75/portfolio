@@ -1,8 +1,4 @@
 // src/hooks/useLenis.js
-//
-// Initialises Lenis smooth scroll and syncs it with
-// Framer Motion's useScroll so both work together.
-
 import { useEffect, useRef } from 'react'
 import Lenis from '@studio-freight/lenis'
 
@@ -10,34 +6,38 @@ export function useLenis() {
   const lenisRef = useRef(null)
 
   useEffect(() => {
+    // Detect touch device — disable Lenis on mobile
+    // Native iOS/Android momentum scroll is better than JS smooth scroll on touch
+    // and Lenis can fight with elastic bounce scroll on mobile browsers
+    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches
+    if (isTouchDevice) return
+
     const lenis = new Lenis({
-      duration:  1.4,          // How long the scroll takes — landonorris.com uses ~1.2-1.6
-      easing: t =>             // Custom easing — expo out, super silky
-        t === 1 ? 1 : 1 - Math.pow(2, -10 * t),
-      orientation:  'vertical',
-      smoothWheel:  true,
-      wheelMultiplier: 0.9,   // Slightly slower than native — feels premium
-      touchMultiplier: 1.5,   // Touch feels snappier
+      duration: 1.4,
+      easing: t => t === 1 ? 1 : 1 - Math.pow(2, -10 * t),
+      orientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 0.9,
+      touchMultiplier: 0, // disabled — native touch scroll handles this
       infinite: false,
     })
 
     lenisRef.current = lenis
-
-    // Lenis needs a RAF loop to work
-    function raf(time) {
-      lenis.raf(time)
-      requestAnimationFrame(raf)
-    }
-    const id = requestAnimationFrame(raf)
-
-    // Expose lenis instance globally so ScrollProgressBar
-    // and Navbar active section detection still work
     window.__lenis = lenis
 
+    // Correct RAF loop — store id so cleanup can cancel it
+    let rafId
+    function raf(time) {
+      lenis.raf(time)
+      rafId = requestAnimationFrame(raf)
+    }
+    rafId = requestAnimationFrame(raf)
+
     return () => {
-      cancelAnimationFrame(id)
+      cancelAnimationFrame(rafId)
       lenis.destroy()
       window.__lenis = null
+      lenisRef.current = null
     }
   }, [])
 
