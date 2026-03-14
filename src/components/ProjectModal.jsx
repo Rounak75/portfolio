@@ -27,11 +27,30 @@ export default function ProjectModal({ project, isDark, onClose }) {
     return () => window.removeEventListener('keydown', handler)
   }, [onClose])
 
-  // Prevent body scroll while modal is open
+  // Prevent page scroll while modal is open
   useEffect(() => {
-    document.body.style.overflow = project ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
+    if (!project) return
+
+    // The ONLY correct approach when Lenis is running:
+    // 1. Stop Lenis (it runs its own RAF — overflow rules won't work while it runs)
+    // 2. Block wheel + touch scroll events directly on the window
+    // 3. Never touch body position/top/overflow — those cause the viewport shift bug
+    if (window.__lenis) window.__lenis.stop()
+
+    const preventScroll = (e) => e.preventDefault()
+    window.addEventListener('wheel', preventScroll, { passive: false })
+    window.addEventListener('touchmove', preventScroll, { passive: false })
+
+    return () => {
+      window.removeEventListener('wheel', preventScroll)
+      window.removeEventListener('touchmove', preventScroll)
+      // Small delay so scroll events don't fire during modal close animation
+      requestAnimationFrame(() => {
+        if (window.__lenis) window.__lenis.start()
+      })
+    }
   }, [project])
+
 
   return (
     // AnimatePresence handles mount/unmount animations
@@ -39,23 +58,26 @@ export default function ProjectModal({ project, isDark, onClose }) {
       {project && (
         // Backdrop
         <motion.div
-          className="fixed inset-0 z-[200] flex items-center justify-center p-6"
+          data-modal-backdrop
+          className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
-          // Click backdrop to close
           onClick={onClose}
-          style={{ background: 'rgba(4,6,12,0.82)', backdropFilter: 'blur(14px)' }}
+          style={{ background: 'rgba(4,6,12,0.85)', backdropFilter: 'blur(14px)' }}
         >
-          {/* Modal card — stop propagation so clicking card doesn't close */}
+          {/* Modal card */}
           <motion.div
+            data-lenis-prevent
             className={clsx(
-              'w-full max-w-[640px] max-h-[90vh] overflow-y-auto',
+              'w-full max-w-[640px] max-h-[88vh] overflow-y-auto',
               'rounded-2xl border',
+              // overscroll-contain prevents scroll bleeding to page on mobile
+              '[overscroll-behavior:contain]',
               isDark
-                ? 'bg-navy-800 border-cyan-400/25'
-                : 'bg-white border-cyan-200'
+                ? 'bg-[#111111] border-yellow-500/25'
+                : 'bg-white border-yellow-200'
             )}
             initial={{ scale: 0.9, y: 30, opacity: 0 }}
             animate={{ scale: 1, y: 0, opacity: 1 }}
@@ -67,10 +89,10 @@ export default function ProjectModal({ project, isDark, onClose }) {
             {/* Emoji hero area */}
             <div className={clsx(
               'h-52 flex items-center justify-center text-[6rem]',
-              'rounded-t-2xl bg-gradient-to-br',
+              'rounded-t-2xl',
               isDark
-                ? 'from-cyan-400/[0.08] to-violet-400/[0.08]'
-                : 'from-cyan-50 to-violet-50'
+                ? 'bg-[#0d0d0d]'
+                : 'bg-yellow-50/40'
             )}>
               {project.emoji}
             </div>
@@ -164,11 +186,7 @@ export default function ProjectModal({ project, isDark, onClose }) {
                   href={project.demo}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2
-                             py-3 rounded-xl text-sm font-semibold text-white
-                             bg-gradient-to-r from-cyan-400 to-violet-400
-                             hover:shadow-xl hover:shadow-cyan-400/25 hover:-translate-y-0.5
-                             transition-all duration-200"
+                  className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-black bg-gradient-to-r from-yellow-500 to-yellow-300 hover:shadow-xl hover:shadow-yellow-500/25 hover:-translate-y-0.5 transition-all duration-200"
                 >
                   <ExternalLink size={15} /> Live Demo
                 </a>

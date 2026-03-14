@@ -14,15 +14,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { projects, filterCategories } from '../data/projects.js'
 import { SectionLabel, SectionTitle, SectionDesc } from './ui/SectionHeader.jsx'
 import ProjectCard  from './ProjectCard.jsx'
-import ProjectModal from './ProjectModal.jsx'
 import clsx from 'clsx'
 
-export default function Projects({ isDark }) {
-  // ── State ─────────────────────────────────────────────
+export default function Projects({ isDark, onPreview }) {
   // Which filter is active — default 'All'
   const [activeFilter, setActiveFilter] = useState('All')
-  // Which project is open in the modal (null = closed)
-  const [modalProject, setModalProject] = useState(null)
 
   // Derive filtered list from activeFilter
   const filtered = activeFilter === 'All'
@@ -104,8 +100,7 @@ export default function Projects({ isDark }) {
                 <ProjectCard
                   project={project}
                   isDark={isDark}
-                  // Opens the modal with this project's data
-                  onPreview={() => setModalProject(project)}
+                  onPreview={() => onPreview(project)}
                 />
               </motion.div>
             ))}
@@ -128,12 +123,6 @@ export default function Projects({ isDark }) {
 
       </div>
 
-      {/* Modal — rendered outside the grid so it overlays everything */}
-      <ProjectModal
-        project={modalProject}
-        isDark={isDark}
-        onClose={() => setModalProject(null)}
-      />
     </section>
   )
 }

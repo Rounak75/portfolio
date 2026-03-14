@@ -13,13 +13,16 @@ export function useLenis() {
     if (isTouchDevice) return
 
     const lenis = new Lenis({
-      duration: 1.4,
+      duration: 1.2,
       easing: t => t === 1 ? 1 : 1 - Math.pow(2, -10 * t),
       orientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 0.9,
-      touchMultiplier: 0, // disabled — native touch scroll handles this
+      wheelMultiplier: 0.85,
+      touchMultiplier: 0,    // native touch scroll is better on mobile
       infinite: false,
+      // prevent Lenis from intercepting scroll inside [data-lenis-prevent] elements
+      // (modal cards, command palette, etc.)
+      syncTouch: false,
     })
 
     lenisRef.current = lenis

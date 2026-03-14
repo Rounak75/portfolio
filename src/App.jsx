@@ -25,6 +25,7 @@ import Contact   from './components/Contact.jsx'
 import Footer    from './components/Footer.jsx'
 
 import LoadingScreen     from './components/LoadingScreen.jsx'
+import ProjectModal      from './components/ProjectModal.jsx'
 import ScrollProgressBar from './components/ScrollProgressBar.jsx'
 import CommandPalette    from './components/CommandPalette.jsx'
 import CustomCursor      from './components/CustomCursor.jsx'
@@ -53,21 +54,21 @@ const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
 const SECTION_VARIANTS = {
   hidden: (custom) => ({
     opacity: 0,
+    // On mobile: only fade, no X translation or scale (avoids horizontal overflow & scroll jank)
     x: isMobile ? 0 : (custom?.x ?? 0),
-    y: custom?.y ?? 40,
-    z: -40,
-    scale: 0.97,
-    ...(isMobile ? {} : { filter: 'blur(3px)' }),
+    y: custom?.y ?? 30,
+    // No scale on mobile — scale + overflow causes scroll container to resize
+    scale: isMobile ? 1 : 0.98,
+    filter: 'blur(0px)', // no blur on any device — blur animating triggers GPU layer creation
   }),
   visible: {
     opacity: 1,
     x: 0,
     y: 0,
-    z: 0,
     scale: 1,
     filter: 'blur(0px)',
     transition: {
-      duration: isMobile ? 0.4 : 0.7,
+      duration: isMobile ? 0.35 : 0.65,
       ease: [0.22, 1, 0.36, 1],
     },
   },
@@ -76,15 +77,19 @@ const SECTION_VARIANTS = {
 // Wrapper that applies the entrance animation to a section
 function SectionReveal({ children, custom }) {
   return (
-    <motion.div
-      variants={SECTION_VARIANTS}
-      custom={custom}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.08 }}
-    >
-      {children}
-    </motion.div>
+    // style overflow-x:clip (not hidden!) keeps scroll context for sticky elements
+    // but prevents animated children from causing horizontal scrollbar during entry
+    <div style={{ overflowX: 'clip' }}>
+      <motion.div
+        variants={SECTION_VARIANTS}
+        custom={custom}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.08 }}
+      >
+        {children}
+      </motion.div>
+    </div>
   )
 }
 
@@ -98,6 +103,9 @@ export default function App() {
 
   // ── Loading screen ────────────────────────────────
   const [loading, setLoading] = useState(true)
+
+  // ── Project modal — rendered at root to escape transform stacking contexts
+  const [modalProject, setModalProject] = useState(null)
 
   return (
     <div className={`min-h-screen transition-colors duration-500
@@ -146,7 +154,7 @@ export default function App() {
 
           {/* Projects — fades up from below */}
           <SectionReveal custom={{ x: 0, y: 50 }}>
-            <Projects isDark={isDark} />
+            <Projects isDark={isDark} onPreview={setModalProject} />
           </SectionReveal>
 
           {/* Resume — slides in from the left */}
@@ -162,6 +170,13 @@ export default function App() {
 
         <Footer isDark={isDark} />
       </div>
+
+      {/* ProjectModal at root level — outside all transforms so position:fixed works correctly */}
+      <ProjectModal
+        project={modalProject}
+        isDark={isDark}
+        onClose={() => setModalProject(null)}
+      />
     </div>
   )
 }

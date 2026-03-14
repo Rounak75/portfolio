@@ -414,8 +414,10 @@ html.lenis body {
   overscroll-behavior: contain;
 }
 
+/* lenis-stopped: DO NOT use overflow:hidden — it causes scroll-stuck bugs on iOS/Android.
+   Lenis pauses its RAF loop when stopped; no extra CSS needed here. */
 .lenis.lenis-stopped {
-  overflow: hidden;
+  /* intentionally empty — scroll lock handled via .modal-open class instead */
 }
 
 /* ─────────────────────────────────────────────
@@ -515,4 +517,62 @@ html.lenis body {
 }
 .ground-shadow:hover::after {
   opacity: 1;
+}
+/* ─────────────────────────────────────────────
+   MODAL SCROLL LOCK
+   overflow:hidden on html is the correct approach.
+   Locking body causes layout collapse (stuck page).
+   Locking html just hides the scrollbar cleanly.
+   ───────────────────────────────────────────── */
+html.modal-open {
+  overflow: hidden;
+}
+
+/* ─────────────────────────────────────────────
+   MOBILE BACKGROUND: pure black
+   Tailwind bg-black = #000000. Orb warm glow can
+   tint #080808 (navy-900) brownish on some screens.
+   Force the document root to be pure #000 in dark mode.
+   ───────────────────────────────────────────── */
+html.dark,
+html.dark body {
+  background-color: #000000;
+}
+
+/* ─────────────────────────────────────────────
+   TIMELINE COLUMN: prevent card overlap
+   The connector div between cards needs the column
+   to be items-stretch not items-center so the line
+   anchors to the card edge, not floats in mid-air.
+   Applied via a utility class on the column wrapper.
+   ───────────────────────────────────────────── */
+.timeline-column {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.timeline-column > * + * {
+  /* Ensure no negative margin collapses cards into each other */
+  margin-top: 0;
+}
+
+/* ─────────────────────────────────────────────
+   PREVENT HORIZONTAL SCROLL on all sections
+   Some Framer Motion transforms temporarily push
+   elements beyond viewport during animation.
+   ───────────────────────────────────────────── */
+main, section {
+  overflow-x: clip; /* clip (not hidden) preserves scroll context */
+  max-width: 100vw;
+}
+
+/* ─────────────────────────────────────────────
+   MODAL BACKDROP: always on top, no layout escape
+   ───────────────────────────────────────────── */
+[data-modal-backdrop] {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  overscroll-behavior: contain;
+  touch-action: none; /* prevent scroll bleed-through on iOS */
 }

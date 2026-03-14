@@ -18,10 +18,20 @@ export default function Navbar({ isDark, triggerRipple }) {
   const [menuOpen,  setMenuOpen]  = useState(false)
   const [active,    setActive]    = useState('hero')
 
-  // Lock body scroll when drawer is open
+  // Lock body scroll when mobile drawer is open
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
+    if (menuOpen) {
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+      if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`
+      document.documentElement.classList.add('modal-open')
+    } else {
+      document.documentElement.classList.remove('modal-open')
+      document.body.style.paddingRight = ''
+    }
+    return () => {
+      document.documentElement.classList.remove('modal-open')
+      document.body.style.paddingRight = ''
+    }
   }, [menuOpen])
 
   useEffect(() => {

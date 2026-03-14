@@ -262,7 +262,7 @@ function TimelineColumn({ title, emoji, items, isDark, delay = 0 }) {
         }} />
       </div>
 
-      <div className="flex flex-col items-stretch">
+      <div className="timeline-column">
         {items.map((item, i) => (
           <TimelineCard
             key={i}
