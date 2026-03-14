@@ -14,12 +14,15 @@
 //  When onClose is called, it goes object→null and plays exit.
 // ═══════════════════════════════════════════════════════
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Github, ExternalLink } from 'lucide-react'
 import clsx from 'clsx'
 
 export default function ProjectModal({ project, isDark, onClose }) {
+  // FIX: ref to the modal card so we can allow scroll inside it
+  const cardRef = useRef(null)
+
   // Close on Escape key
   useEffect(() => {
     const handler = e => { if (e.key === 'Escape') onClose() }
@@ -37,7 +40,12 @@ export default function ProjectModal({ project, isDark, onClose }) {
     // 3. Never touch body position/top/overflow — those cause the viewport shift bug
     if (window.__lenis) window.__lenis.stop()
 
-    const preventScroll = (e) => e.preventDefault()
+    // FIX: only block scroll OUTSIDE the modal card
+    // Previous version blocked ALL touchmove — that prevented scrolling inside the modal
+    const preventScroll = (e) => {
+      if (cardRef.current && cardRef.current.contains(e.target)) return
+      e.preventDefault()
+    }
     window.addEventListener('wheel', preventScroll, { passive: false })
     window.addEventListener('touchmove', preventScroll, { passive: false })
 
@@ -57,9 +65,11 @@ export default function ProjectModal({ project, isDark, onClose }) {
     <AnimatePresence>
       {project && (
         // Backdrop
+        // FIX: items-end on mobile (bottom sheet) so card never overflows screen width
+        // sm:items-center restores centered layout on desktop
         <motion.div
           data-modal-backdrop
-          className="fixed inset-0 z-[200] flex items-center justify-center px-3 py-4 sm:p-6"
+          className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center sm:px-4 sm:py-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -69,23 +79,35 @@ export default function ProjectModal({ project, isDark, onClose }) {
         >
           {/* Modal card */}
           <motion.div
+            ref={cardRef}
             data-lenis-prevent
             className={clsx(
-              // w-full with mx-auto, strict max-h so it scrolls on small phones
-              'w-full max-w-[640px] overflow-y-auto',
-              'rounded-2xl border',
+              // FIX: full width on mobile (no side padding = no overflow/border clip)
+              // max-w-[640px] kicks in at sm breakpoint for desktop
+              'w-full sm:max-w-[640px] overflow-y-auto',
+              // FIX: rounded top corners only on mobile (bottom sheet style)
+              // full rounded on desktop
+              'rounded-t-3xl sm:rounded-2xl',
+              'border-t border-x sm:border',
               '[overscroll-behavior:contain] [-webkit-overflow-scrolling:touch]',
               isDark
                 ? 'bg-[#111111] border-yellow-500/25'
                 : 'bg-white border-yellow-200'
             )}
-            initial={{ scale: 0.9, y: 30, opacity: 0 }}
-            animate={{ scale: 1, y: 0, opacity: 1 }}
-            exit={{ scale: 0.92, y: 20, opacity: 0 }}
+            // FIX: slides up from bottom on mobile, scale-in on desktop
+            initial={{ y: '100%', opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: '100%', opacity: 0 }}
             transition={{ type: 'spring', stiffness: 320, damping: 28 }}
-            style={{ maxHeight: 'min(88dvh, 88vh)' }}
+            // FIX: dvh accounts for mobile browser address bar (vh doesn't)
+            style={{ maxHeight: '92dvh', WebkitOverflowScrolling: 'touch' }}
             onClick={e => e.stopPropagation()}
           >
+            {/* FIX: drag handle pill — tells mobile users they can scroll up for more */}
+            <div className="sm:hidden flex justify-center pt-3 pb-1">
+              <div className={clsx('w-9 h-1 rounded-full', isDark ? 'bg-white/20' : 'bg-black/20')} />
+            </div>
+
             {/* Emoji hero area */}
             <div className={clsx(
               'h-36 sm:h-52 flex items-center justify-center text-5xl sm:text-[6rem]',
@@ -101,8 +123,9 @@ export default function ProjectModal({ project, isDark, onClose }) {
             <div className="p-5 sm:p-8">
               {/* Title row + close button */}
               <div className="flex items-start justify-between mb-6">
-                <div>
-                  <div className="font-mono text-xs text-cyan-400 uppercase tracking-[0.1em] mb-1">
+                {/* FIX: min-w-0 + pr-3 prevents title overflowing into close button */}
+                <div className="flex-1 min-w-0 pr-3">
+                  <div className="font-mono text-xs text-yellow-500 uppercase tracking-[0.1em] mb-1">
                     {project.category.join(' · ')}
                   </div>
                   <h2 className="font-display font-extrabold text-xl leading-tight">
@@ -157,8 +180,8 @@ export default function ProjectModal({ project, isDark, onClose }) {
                     className={clsx(
                       'font-mono text-xs px-3 py-1 rounded-lg',
                       isDark
-                        ? 'bg-cyan-400/10 border border-cyan-400/20 text-cyan-400'
-                        : 'bg-cyan-50 border border-cyan-200 text-cyan-700'
+                        ? 'bg-yellow-500/10 border border-yellow-500/20 text-yellow-400'
+                        : 'bg-yellow-50 border border-yellow-200 text-yellow-700'
                     )}
                   >
                     {t}
@@ -176,7 +199,7 @@ export default function ProjectModal({ project, isDark, onClose }) {
                     'flex-1 flex items-center justify-center gap-2',
                     'py-3 rounded-xl text-sm font-semibold border transition-all duration-200',
                     isDark
-                      ? 'bg-white/[0.05] border-white/[0.1] text-slate-200 hover:bg-white/[0.09] hover:border-cyan-400/30'
+                      ? 'bg-white/[0.05] border-white/[0.1] text-slate-200 hover:bg-white/[0.09] hover:border-yellow-500/30'
                       : 'bg-black/[0.04] border-black/[0.08] text-slate-700 hover:bg-black/[0.08]'
                   )}
                 >
